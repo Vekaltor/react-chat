@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Anek Malayalam";
+  font-style: normal;
+  font-weight: 100;
+  src: url("../assets/fonts/anek-malayalam-v4-malayalam-100.woff2")
+      format("woff2"),
+    url("../assets/fonts/anek-malayalam-v4-malayalam-100.woff") format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Anek Malayalam";
+  font-style: normal;
+  font-weight: 200;
+  src: url("../assets/fonts/anek-malayalam-v4-malayalam-200.woff2")
+      format("woff2"),
+    url("../assets/fonts/anek-malayalam-v4-malayalam-200.woff") format("woff");
+  font-display: swap;
+}
