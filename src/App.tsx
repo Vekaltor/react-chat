@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import useColorMode from "./hooks/useColorMode";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles } from "./styles/Global";
+import { darkTheme, lightTheme } from "./styles/Theme";
+import ThemeTogglerContext from "./contexts/ThemeTogglerContext";
 
-function App() {
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
+import ProfilePage from "./pages/ProfilePage";
+import View from "./components/View";
+
+const App: React.FC = (): React.ReactElement => {
+  const [theme, themeToggler] = useColorMode();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeTogglerContext.Provider value={{ theme, themeToggler }}>
+      <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
+        <GlobalStyles />
+        <Router>
+          <View>
+            <Routes>
+              <Route
+                path="*"
+                element={
+                  <ProtectedRoute
+                    isAuth={false}
+                    path="/"
+                    element={<ProfilePage />}
+                  />
+                }
+              />
+              <Route path="/login" element={<LoginPage isAuth={false} />} />
+            </Routes>
+          </View>
+        </Router>
+      </ThemeProvider>
+    </ThemeTogglerContext.Provider>
   );
-}
+};
 
 export default App;
