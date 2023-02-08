@@ -1,8 +1,8 @@
 import { createGlobalStyle } from "styled-components";
-import fontsCss from "./fonts.module.css";
-
+import { fontFaces } from "./Fonts.module";
 export const GlobalStyles = createGlobalStyle`
- ${fontsCss}
+
+${fontFaces}
 
 *,
 *::before,
@@ -10,14 +10,19 @@ export const GlobalStyles = createGlobalStyle`
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Asap', sans-serif;
 }
 
 body {
   overflow-x: hidden;
-  min-height: 100vh;
   text-rendering: optimizeSpeed;
   line-height: 1;
   font-size: 1rem;
+  
+}
+
+#root{
+  min-height: 100vh;
 }
 
 button {
