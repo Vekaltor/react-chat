@@ -1,35 +1,35 @@
-# react-typescript-clean-template
+# React - chat
 
-- React/Typescript clean project template for you to use as a starter project. Extraneous junks that come with [`create-react-app`](https://create-react-app.dev/) are removed.
-- CSS reset applied (margin and padding are set to zero).
+An application for communication between friends.
 
-## Prerequisites
+Currently i am learning node js, in the near future i will do API for this app (with JWT tokens).
 
-- Make sure you have [git](https://git-scm.com/) installed.
-- You must be on [Node](https://nodejs.org/en/) latest LTS version.
+## Technologies:
+<p>Project is created with:</p>
+<ul>
+  <li>HTML5</li>
+  <li>typescript version: 4.9.4</li>
+  <li>React version: 18.2.0</li>
+</ul>
 
-## How to use template
- 
-Run the command below to create a new project and replace `your-project-name` with your actual project name:
+<!-- 
+## Check on your own
+https://vekaltor.github.io/SPA
+-->
 
-```bash
-git clone https://github.com/quangnguyen17/react-typescript-clean-template.git your-project-name
-```
 
-#### To install project's dependencies:
+## Setup
+To run this project, install it locally using npm:
+````
+$ cd ../{folder with project}
 
-```bash
-npm install
-```
+$ npm install
 
-#### To start project:
+$ npm start
+````
 
-```bash
-npm start
-```
+## Features:
 
-#### To create a build for production:
+### - Account registration form validator
 
-```bash
-npm run build
-```
+
