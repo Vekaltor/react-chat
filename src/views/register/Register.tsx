@@ -1,3 +1,5 @@
+import Input from "../../components/Input";
+import useForm from "../../hooks/useForm";
 import { S } from "../styles";
 
 type RegisterProps = {
@@ -5,14 +7,36 @@ type RegisterProps = {
 };
 
 const Register = ({ swapView }: RegisterProps) => {
+  const [updateValues, submitHandler, errors, validateElement] = useForm();
   return (
-    <S.Wrapper>
+    <S.Wrapper id="register-form">
       <S.LeftSide>
         <S.Header>register</S.Header>
-        <S.Form>
-          <S.Input name="name" type="text" placeholder="login" />
-          <S.Input name="email" type="email" placeholder="email" />
-          <S.Input name="password" type="password" placeholder="password" />
+        <S.Form onSubmit={submitHandler}>
+          <Input
+            name="name"
+            type="text"
+            placeholder="name"
+            onChange={updateValues}
+            onBlur={validateElement}
+            message={errors.name}
+          />
+          <Input
+            name="email"
+            type="email"
+            placeholder="email"
+            onChange={updateValues}
+            onBlur={validateElement}
+            message={errors.email}
+          />
+          <Input
+            name="password"
+            type="password"
+            placeholder="password"
+            onChange={updateValues}
+            onBlur={validateElement}
+            message={errors.password}
+          />
           <S.ButtonSubmit type="submit">sign up</S.ButtonSubmit>
         </S.Form>
       </S.LeftSide>
