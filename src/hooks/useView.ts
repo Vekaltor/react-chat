@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 enum viewEnums {
-  login = "login",
-  register = "register",
+  login,
+  register,
 }
 
-const useView = (): [viewEnums, () => void] => {
-  const [view, setView] = useState(viewEnums.login);
+const useView = (initial: viewEnums): [viewEnums, () => void] => {
+  const [view, setView] = useState<viewEnums>(initial);
 
   const swapView = (): void => {
     view === viewEnums.login

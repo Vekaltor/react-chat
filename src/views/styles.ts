@@ -1,14 +1,5 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  display: flex;
-  height: 400px;
-  width: 600px;
-  border-radius: 20px;
-  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
-  background-color: ${({ theme }) => theme.bgPrimary};
-`;
-
 const Header = styled.h1`
   text-align: center;
   text-transform: capitalize;
@@ -36,14 +27,17 @@ const Form = styled.form`
   gap: 10px;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ message: string | undefined }>`
   background-color: #eee;
-  border: none;
+  border: 1px solid;
+  border-color: ${({ message }) => (message ? "red" : "#eee")};
   padding: 12px 15px;
-  width: 100%;
   font-size: 0.8em;
   &::placeholder {
     text-transform: capitalize;
+  }
+  &[valid="true"] {
+    border-color: greenyellow;
   }
 `;
 
@@ -95,6 +89,32 @@ const RightSide = styled.div`
   }
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  height: 400px;
+  width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+  background-color: ${({ theme }) => theme.bgPrimary};
+  &[id="register-form"] {
+    flex-direction: row-reverse;
+    ${LeftSide} {
+      border-radius: 0 10px 10px 0;
+    }
+    ${RightSide} {
+      border-radius: 10px 0 0 10px;
+      background: linear-gradient(to left, #ff4b2b, #ff416c);
+    }
+  }
+`;
+
+const Label = styled.label`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+`;
+
 const Text = styled.span`
   font-size: 14px;
   font-weight: 100;
@@ -114,4 +134,5 @@ export const S = {
   ButtonSubmit,
   ForgottenPasword,
   Text,
+  Label,
 };
