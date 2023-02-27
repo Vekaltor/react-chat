@@ -1,12 +1,11 @@
 import { ChangeEventHandler, createContext } from "react";
 
-type ThemeTogglerContextProps =
+type ThemeContextProps =
   | {
       theme: string;
       themeToggler: ChangeEventHandler<HTMLInputElement>;
     }
   | undefined;
 
-const ThemeTogglerContext = createContext<ThemeTogglerContextProps>(undefined);
-
-export default ThemeTogglerContext;
+const ThemeContext = createContext<ThemeContextProps>(undefined);
+export default ThemeContext;

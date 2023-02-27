@@ -1,7 +1,7 @@
-import { useState, useEffect, ChangeEventHandler } from "react";
+import { useState, ChangeEventHandler, useLayoutEffect } from "react";
 
-const useColorMode = (): [string, ChangeEventHandler] => {
-  const [theme, setTheme] = useState("dark");
+const useColorMode = (intial: string): [string, ChangeEventHandler] => {
+  const [theme, setTheme] = useState<string>(intial);
 
   const setMode = (mode: string): void => {
     window.localStorage.setItem("theme", mode);
@@ -12,9 +12,10 @@ const useColorMode = (): [string, ChangeEventHandler] => {
     theme === "dark" ? setMode("light") : setMode("dark");
   };
 
-  useEffect(() => {
-    const localTheme = window.localStorage.getItem("theme");
+  useLayoutEffect(() => {
+    const localTheme: string | null = window.localStorage.getItem("theme");
     localTheme && setTheme(localTheme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [theme, themeToggler];

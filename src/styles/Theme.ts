@@ -15,3 +15,17 @@ export const lightTheme: DefaultTheme = {
   bgPrimary: "#FAFAFA",
   bgSecondary: "#FFC80A",
 };
+
+enum themeNames {
+  DARK = "dark",
+  LIGHT = "light",
+}
+
+const themes = {
+  darkTheme,
+  lightTheme,
+};
+
+export const initialTheme: string = themeNames.LIGHT;
+
+export default themes;
