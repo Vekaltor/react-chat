@@ -1,41 +1,94 @@
+import { ChangeEvent, useRef } from "react";
+import { registerUser } from "../../authActions";
 import Input from "../../components/Input";
-import useForm from "../../hooks/useForm";
+import { useAppDisptach } from "../../hooks/useAppDisptach";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { RegisterElements } from "../../types/forms";
 import { S } from "../styles";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type RegisterProps = {
   swapView: () => void;
 };
 
 const Register = ({ swapView }: RegisterProps) => {
-  const [updateValues, submitHandler, errors, validateElement] = useForm();
+  const { register, handleSubmit, formState } = useForm<RegisterElements>();
+  const { errors } = formState;
+
+  const { error, loading, message } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDisptach();
+
+  const handleChange = (e: ChangeEvent): void => {
+    const target = e.target as HTMLInputElement;
+    const { name, value } = target;
+  };
+
+  const formSubmit: SubmitHandler<RegisterElements> = (
+    data: RegisterElements
+  ): void => {
+    dispatch(registerUser(data));
+  };
+
   return (
     <S.Wrapper id="register-form">
       <S.LeftSide>
         <S.Header>register</S.Header>
-        <S.Form onSubmit={submitHandler}>
+        <S.Form onSubmit={handleSubmit(formSubmit)}>
           <Input
-            name="name"
+            refs={register("name", {
+              required: "Name cannot be empty",
+              pattern: {
+                value: /^[a-zA-Z]*$/,
+                message: "Only letters are allowed",
+              },
+            })}
+            error={errors.name}
             type="text"
-            placeholder="name"
-            onChange={updateValues}
-            onBlur={validateElement}
-            message={errors.name}
+            placeholder="Name"
+            onChange={(e: ChangeEvent) => handleChange(e)}
           />
           <Input
-            name="email"
+            refs={register("surname", {
+              required: "Surname cannot be empty",
+              pattern: {
+                value: /^[a-zA-Z]*$/,
+                message: "Only letters are allowed",
+              },
+            })}
+            error={errors.surname}
+            type="text"
+            placeholder="Surname"
+            onChange={(e: ChangeEvent) => handleChange(e)}
+          />
+          <Input
+            refs={register("email", {
+              required: "Email cannot be empty",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Email address is invalid",
+              },
+            })}
+            error={errors.email}
             type="email"
-            placeholder="email"
-            onChange={updateValues}
-            onBlur={validateElement}
-            message={errors.email}
+            placeholder="Email"
+            onChange={handleChange}
           />
           <Input
-            name="password"
+            refs={register("pass", {
+              required: "Password cannot be empty",
+              minLength: {
+                value: 8,
+                message: "Password length is too small",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%.]).*$/,
+                message: "Password should be strong",
+              },
+            })}
+            error={errors.pass}
             type="password"
-            placeholder="password"
-            onChange={updateValues}
-            onBlur={validateElement}
-            message={errors.password}
+            placeholder="Password"
+            onChange={handleChange}
           />
           <S.ButtonSubmit type="submit">sign up</S.ButtonSubmit>
         </S.Form>

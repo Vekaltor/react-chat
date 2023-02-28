@@ -13,6 +13,7 @@ const LeftSide = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 50%;
+  padding: 25px 0;
   border-radius: 10px 0 0 10px;
   background-color: white;
   ${Header} {
@@ -27,16 +28,16 @@ const Form = styled.form`
   gap: 10px;
 `;
 
-const Input = styled.input<{ message: string | undefined }>`
+const Input = styled.input<{ error: string | undefined }>`
   background-color: #eee;
   border: 1px solid;
-  border-color: ${({ message }) => (message ? "red" : "#eee")};
+  border-color: ${({ error }) => (error ? "red" : "#eee")};
   padding: 12px 15px;
   font-size: 0.8em;
   &::placeholder {
     text-transform: capitalize;
   }
-  &[valid="true"] {
+  &[valid] {
     border-color: greenyellow;
   }
 `;
@@ -91,7 +92,8 @@ const RightSide = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  height: 400px;
+  min-height: 400px;
+  height: auto;
   width: 600px;
   border-radius: 20px;
   box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);

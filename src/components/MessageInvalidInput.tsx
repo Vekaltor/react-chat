@@ -1,7 +1,11 @@
 import StyledMessage from "./styles/MessageInvalidInput.styles";
 
-const MessageInvalidInput = ({ message }: any) => {
-  return <StyledMessage>{message}</StyledMessage>;
+type Props = {
+  message: string;
+};
+
+const MessageInvalidInput = (props: Props) => {
+  return <StyledMessage>{props.message}</StyledMessage>;
 };
 
 export default MessageInvalidInput;
