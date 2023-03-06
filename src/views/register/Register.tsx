@@ -1,11 +1,12 @@
-import { ChangeEvent, useRef } from "react";
-import { registerUser } from "../../authActions";
-import Input from "../../components/Input";
+import { useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDisptach } from "../../hooks/useAppDisptach";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import { registerUser } from "../../authSlice";
 import { RegisterElements } from "../../types/forms";
 import { S } from "../styles";
-import { useForm, SubmitHandler } from "react-hook-form";
+import Notification from "../../features/notification/Notification";
+import Input from "../../components/Input";
 
 type RegisterProps = {
   swapView: () => void;
@@ -14,14 +15,9 @@ type RegisterProps = {
 const Register = ({ swapView }: RegisterProps) => {
   const { register, handleSubmit, formState } = useForm<RegisterElements>();
   const { errors } = formState;
-
-  const { error, loading, message } = useAppSelector((state) => state.auth);
+  const { message, type } = useAppSelector((state) => state.notification);
+  const { loading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDisptach();
-
-  const handleChange = (e: ChangeEvent): void => {
-    const target = e.target as HTMLInputElement;
-    const { name, value } = target;
-  };
 
   const formSubmit: SubmitHandler<RegisterElements> = (
     data: RegisterElements
@@ -29,8 +25,15 @@ const Register = ({ swapView }: RegisterProps) => {
     dispatch(registerUser(data));
   };
 
+  const redirectToLogin = (): void => {
+    if (type === "success") swapView();
+  };
+
+  useEffect(() => {}, [message]);
+
   return (
     <S.Wrapper id="register-form">
+      {message ? <Notification callback={redirectToLogin} /> : null}
       <S.LeftSide>
         <S.Header>register</S.Header>
         <S.Form onSubmit={handleSubmit(formSubmit)}>
@@ -45,7 +48,6 @@ const Register = ({ swapView }: RegisterProps) => {
             error={errors.name}
             type="text"
             placeholder="Name"
-            onChange={(e: ChangeEvent) => handleChange(e)}
           />
           <Input
             refs={register("surname", {
@@ -58,7 +60,6 @@ const Register = ({ swapView }: RegisterProps) => {
             error={errors.surname}
             type="text"
             placeholder="Surname"
-            onChange={(e: ChangeEvent) => handleChange(e)}
           />
           <Input
             refs={register("email", {
@@ -71,7 +72,6 @@ const Register = ({ swapView }: RegisterProps) => {
             error={errors.email}
             type="email"
             placeholder="Email"
-            onChange={handleChange}
           />
           <Input
             refs={register("pass", {
@@ -88,9 +88,13 @@ const Register = ({ swapView }: RegisterProps) => {
             error={errors.pass}
             type="password"
             placeholder="Password"
-            onChange={handleChange}
           />
-          <S.ButtonSubmit type="submit">sign up</S.ButtonSubmit>
+          <S.ButtonSubmit
+            type="submit"
+            disabled={loading || message ? true : false}
+          >
+            sign up
+          </S.ButtonSubmit>
         </S.Form>
       </S.LeftSide>
       <S.RightSide>

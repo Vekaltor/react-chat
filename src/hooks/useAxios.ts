@@ -5,8 +5,8 @@ import { backendURL } from "../config/server";
 type UseAxiosProps = {
   url: string;
   method: "get" | "post" | "delete" | "put";
-  body: {};
-  headers: RawAxiosRequestHeaders;
+  body?: {};
+  headers?: RawAxiosRequestHeaders;
 };
 
 axios.defaults.baseURL = backendURL;

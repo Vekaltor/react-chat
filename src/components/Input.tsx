@@ -1,26 +1,21 @@
 import { S } from "../views/styles";
+import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { InputBaseProps } from "../types/InputBaseProps";
 import MessageInvalidInput from "./MessageInvalidInput";
-import { UseFormRegisterReturn, UseFormRegister } from "react-hook-form";
-import { HTMLInputTypeAttribute } from "react";
 
-interface InputProps {
-  type?: string;
-  placeholder?: string;
-  error?: string;
-  // message?: string | undefined;
-  // onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
-  // onBlur?: React.FocusEventHandler<HTMLInputElement> | undefined;
+interface InputProps extends InputBaseProps {
+  error?: FieldError;
+  refs?: UseFormRegisterReturn | any;
 }
 
-const Input = (props: any) => {
-  // const { name, type, placeholder, message, onChange, onBlur } = props;
-  const { error, name } = props;
+function Input(props: InputProps): JSX.Element {
+  const { error, name, refs } = props;
   return (
     <S.Label htmlFor={name}>
-      <S.Input error="" {...props} {...props.refs} />
-      {error ? <MessageInvalidInput message={error.message} /> : null}
+      <S.Input {...refs} {...props} />
+      {error?.message ? <MessageInvalidInput message={error.message} /> : null}
     </S.Label>
   );
-};
+}
 
 export default Input;

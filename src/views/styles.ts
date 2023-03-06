@@ -37,7 +37,7 @@ const Input = styled.input<{ error: string | undefined }>`
   &::placeholder {
     text-transform: capitalize;
   }
-  &[valid] {
+  &[valid="true"] {
     border-color: greenyellow;
   }
 `;
