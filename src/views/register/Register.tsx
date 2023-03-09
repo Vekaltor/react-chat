@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDisptach } from "../../hooks/useAppDisptach";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -13,7 +12,8 @@ type RegisterProps = {
 };
 
 const Register = ({ swapView }: RegisterProps) => {
-  const { register, handleSubmit, formState } = useForm<RegisterElements>();
+  const { register, handleSubmit, formState, reset } =
+    useForm<RegisterElements>();
   const { errors } = formState;
   const { message, type } = useAppSelector((state) => state.notification);
   const { loading } = useAppSelector((state) => state.auth);
@@ -23,17 +23,12 @@ const Register = ({ swapView }: RegisterProps) => {
     data: RegisterElements
   ): void => {
     dispatch(registerUser(data));
+    if (type === "success") reset();
   };
-
-  const redirectToLogin = (): void => {
-    if (type === "success") swapView();
-  };
-
-  useEffect(() => {}, [message]);
 
   return (
     <S.Wrapper id="register-form">
-      {message ? <Notification callback={redirectToLogin} /> : null}
+      {message ? <Notification /> : null}
       <S.LeftSide>
         <S.Header>register</S.Header>
         <S.Form onSubmit={handleSubmit(formSubmit)}>

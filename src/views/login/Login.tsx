@@ -1,6 +1,11 @@
-import { ChangeEvent, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../authSlice";
 import Input from "../../components/Input";
+import Loader from "../../features/loader/Loader";
+import Notification from "../../features/notification/Notification";
+import { useAppDisptach } from "../../hooks/useAppDisptach";
+import { useAppSelector } from "../../hooks/useAppSelector";
 import { LoginElements } from "../../types/forms";
 import { S } from "../styles";
 
@@ -9,32 +14,35 @@ type LoginProps = {
 };
 
 const Login = ({ swapView }: LoginProps) => {
-  const { register, handleSubmit, formState } = useForm<LoginElements>();
+  const { register, handleSubmit, formState } = useForm<LoginElements>({
+    defaultValues: {
+      email: "",
+      pass: "",
+    },
+  });
   const { errors } = formState;
-  const leftSideRef = useRef(null);
-  const rightSideRef = useRef(null);
+  const { message, type } = useAppSelector((state) => state.notification);
+  const { isAuthorizated, loading } = useAppSelector((state) => state.auth);
 
-  const formSubmit: SubmitHandler<LoginElements> = (
+  const dispatch = useAppDisptach();
+  const history = useNavigate();
+
+  const formSubmit: SubmitHandler<LoginElements> = async (
     data: LoginElements
-  ): void => {
-    // dispatch(()=>{});
+  ) => {
+    await dispatch(loginUser(data));
+    if (!message) history("/");
   };
 
   const handleClick = () => {
-    // leftSideRef.current.
-    // Stworzyć useAnimation ktore bedzie przyjmowala callback oraz
-    // bedzie na czas trawnia animacji czekalo a pozniej wykona callback
     swapView();
-  };
-
-  const handleChange = (e: ChangeEvent) => {
-    const target = e.target as HTMLInputElement;
-    const { name, value } = target;
   };
 
   return (
     <S.Wrapper id="login-form">
-      <S.LeftSide ref={leftSideRef}>
+      {message ? <Notification /> : null}
+      {loading ? <Loader background="rgba(0,0,0,0.2)" /> : null}
+      <S.LeftSide>
         <S.Header>Login</S.Header>
         <S.Form onSubmit={handleSubmit(formSubmit)} noValidate>
           <Input
@@ -44,7 +52,6 @@ const Login = ({ swapView }: LoginProps) => {
             error={errors.email}
             type="email"
             placeholder="Email"
-            onChange={handleChange}
           />
           <Input
             refs={register("pass", {
@@ -53,13 +60,14 @@ const Login = ({ swapView }: LoginProps) => {
             error={errors.pass}
             type="password"
             placeholder="Password"
-            onChange={handleChange}
           />
           <S.ForgottenPasword>Forgot your password?</S.ForgottenPasword>
-          <S.ButtonSubmit type="submit">sign in</S.ButtonSubmit>
+          <S.ButtonSubmit type="submit" disabled={isAuthorizated}>
+            sign in
+          </S.ButtonSubmit>
         </S.Form>
       </S.LeftSide>
-      <S.RightSide ref={rightSideRef}>
+      <S.RightSide>
         <S.Header>Hello, Friend!</S.Header>
         <S.Text>Enter your personal details and start journey with us</S.Text>
         <S.ButtonSubmit onClick={handleClick}>sign up</S.ButtonSubmit>
