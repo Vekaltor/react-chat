@@ -126,7 +126,7 @@ enum NotificationColor {
 }
 
 type NotificationProps = {
-  callback: () => void;
+  callback?: () => void;
 };
 
 const Notification = (props: NotificationProps): ReactElement | null => {

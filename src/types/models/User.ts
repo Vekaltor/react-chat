@@ -11,6 +11,7 @@ enum RolesUser {
 
 type DetailsUser = {
   role: RolesUser;
+  is_verified: boolean;
   created_at: Date;
   profile_photo: string;
   sex: GenderUser;
@@ -26,10 +27,10 @@ type Contact = {
 };
 
 export type User = {
+  id: string;
   name: string;
   surname: string;
   pass?: string;
-  refreshToken: string;
   details: DetailsUser;
   contact: Contact;
 };

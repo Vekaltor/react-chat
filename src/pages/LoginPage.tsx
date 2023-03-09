@@ -1,36 +1,23 @@
 import { useContext } from "react";
-import {
-  Navigate,
-  NavigateFunction,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
-import ThemeSwitch from "../components/ThemeSwitch";
+import { useCookies } from "react-cookie";
+import { Navigate } from "react-router-dom";
 import ThemeTogglerContext from "../contexts/ThemeContext";
 import useView from "../hooks/useView";
+
+import ThemeSwitch from "../components/ThemeSwitch";
 import Login from "../views/login/Login";
 import Register from "../views/register/Register";
-
-type LoginProps = {
-  isAuth: boolean;
-};
 
 enum viewEnums {
   login,
   register,
 }
 
-const LoginPage = (props: LoginProps) => {
+const LoginPage = () => {
   const [view, swapView] = useView(viewEnums.login);
-  const { isAuth } = props;
-  const history: NavigateFunction = useNavigate();
+  const [cookies, __] = useCookies(["accessToken"]);
+  const isAuth = cookies.accessToken;
   const themeContext = useContext(ThemeTogglerContext);
-
-  if (isAuth) {
-    history(-1);
-    <Navigate to="/" />;
-    return <Outlet />;
-  }
 
   const viewComponent =
     view === viewEnums.login ? (
@@ -39,15 +26,17 @@ const LoginPage = (props: LoginProps) => {
       <Register swapView={swapView} />
     );
 
-  return (
-    <>
-      <ThemeSwitch
-        onChange={themeContext?.themeToggler}
-        theme={themeContext?.theme}
-      />
-      {viewComponent}
-    </>
-  );
+  if (!isAuth)
+    return (
+      <>
+        <ThemeSwitch
+          onChange={themeContext?.themeToggler}
+          theme={themeContext?.theme}
+        />
+        {viewComponent}
+      </>
+    );
+  else return <Navigate to="/" />;
 };
 
 export default LoginPage;
