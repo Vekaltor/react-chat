@@ -34,3 +34,8 @@ export type User = {
   details: DetailsUser;
   contact: Contact;
 };
+
+export type SocketUser = {
+  userId: string;
+  socketId: string;
+};

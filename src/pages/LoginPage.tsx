@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
-import ThemeTogglerContext from "../contexts/ThemeContext";
+import ThemeTogglerContext from "../contexts/theme/ThemeContext";
 import useView from "../hooks/useView";
 
 import ThemeSwitch from "../components/ThemeSwitch";

@@ -3,9 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import useColorMode from "./hooks/useColorMode";
 import { GlobalStyles } from "./styles/Global";
 import themes, { initialTheme } from "./styles/Theme";
-import { ThemeContextProvider } from "./contexts/ThemeContextProvider";
-import { useAppSelector } from "./hooks/useAppSelector";
-import { useCookies } from "react-cookie";
+import { ThemeContextProvider } from "./contexts/theme/ThemeContextProvider";
 
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./utils/ProtectedRoute";

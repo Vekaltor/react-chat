@@ -14,15 +14,19 @@ import {
   ILogoutResponse,
   IRegisterResponse,
 } from "./types/responses";
+import { User } from "./types/models/User";
+import { Cookies } from "react-cookie";
 
 interface AuthState {
   isAuthorizated: boolean;
+  user: User | undefined;
   loading: boolean;
   message: string;
 }
 
 const initialState: AuthState = {
   isAuthorizated: false,
+  user: new Cookies().get("user") || undefined,
   loading: false,
   message: "",
 };
@@ -51,6 +55,7 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state) => {
       state.loading = false;
       state.isAuthorizated = true;
+      state.user = new Cookies().get("user");
     });
     builder.addCase(loginUser.rejected, (state) => {
       state.loading = false;
@@ -61,6 +66,7 @@ export const authSlice = createSlice({
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.loading = false;
       state.isAuthorizated = false;
+      state.user = undefined;
     });
     builder.addCase(logoutUser.rejected, (state) => {
       state.loading = false;
@@ -80,6 +86,14 @@ export const registerUser = createAsyncThunk<
     .register(body)
     .catch((err: AxiosError) => {
       const registerError = err.response?.data as IRegisterError;
+      if (!err.response) {
+        thunkAPI.dispatch(
+          createNotification({
+            type: "error",
+            message: "Upss something went wrong...",
+          })
+        );
+      }
       thunkAPI.dispatch(
         createNotification({
           type: registerError.error.type,
@@ -111,6 +125,14 @@ export const loginUser = createAsyncThunk<
     .login(body)
     .catch((err: AxiosError) => {
       const loginError = err.response?.data as ILoginError;
+      if (!err.response) {
+        thunkAPI.dispatch(
+          createNotification({
+            type: "error",
+            message: "Upss something went wrong...",
+          })
+        );
+      }
       thunkAPI.dispatch(
         createNotification({
           type: loginError.error.type,

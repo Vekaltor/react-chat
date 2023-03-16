@@ -1,3 +1,4 @@
+import { Friend } from "./models/Friend";
 import { User } from "./models/User";
 
 export interface IRegisterResponse {
@@ -16,4 +17,8 @@ export interface IActivateAccResponse {
 
 export interface ILogoutResponse {
   message: string;
+}
+
+export interface IFriendsResponse {
+  friends: Array<Friend>;
 }
