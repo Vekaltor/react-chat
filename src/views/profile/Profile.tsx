@@ -16,26 +16,49 @@ const Profile = () => {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
+    socket.emit("user-offline");
     history("/login");
   };
 
   useEffect(() => {
     socket.connect();
-    socket.emit("login", user?.id);
+    socket.emit("user-online", user?.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <div>
-        <h3>Profile ID: {user?.id}</h3>
-        <br></br>
-        <Chat />
-        <br></br>
-        <button onClick={handleLogout}>LOGOUT</button>
-      </div>
-      <div>
-        <Friends />
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "row-reverse",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <h3>Profile: {user?.name}</h3>
+          <br></br>
+          <Chat />
+          <br></br>
+          <button onClick={handleLogout}>LOGOUT</button>
+        </div>
+        <div
+          style={{
+            borderRight: "2px solid black",
+            width: "25%",
+          }}
+        >
+          <Friends />
+        </div>
       </div>
     </>
   );

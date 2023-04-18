@@ -5,6 +5,11 @@ export type Friend = {
   photo?: string;
 };
 
+export type FriendWithStatus = {
+  friend: Friend;
+  status: StatusFriend;
+};
+
 export type StatusFriend = "online" | "offline";
 
 export type FriendId = string;

@@ -13,9 +13,10 @@ const Friends = () => {
     dispatch(getFriends(user?.id!));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
-    <div>
-      <h3>Friends:</h3>
+    <div style={{ padding: 10, marginTop: 20 }}>
+      <h3 style={{ marginBottom: 20 }}>Friends:</h3>
       {friends.length ? <FriendsList /> : null}
     </div>
   );

@@ -1,23 +1,14 @@
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import {
-  Friend as FriendProps,
-  StatusFriend,
-} from "../../../types/models/Friend";
+import { FriendWithStatus as FriendProps } from "../../../types/models/Friend";
 import FriendStatus from "./FriendStatus";
 
 const Friend = (props: FriendProps) => {
-  const { onlineFriends } = useAppSelector((state) => state.friends);
-  const { _id, name, surname, photo } = props;
-
-  const checkStatus = (): StatusFriend => {
-    if (onlineFriends.includes(_id)) return "online";
-    return "offline";
-  };
+  const { status, friend } = props;
+  const { _id, name, surname, photo } = friend;
 
   return (
-    <li>
-      <FriendStatus status={checkStatus()} />
-      <span>
+    <li style={{ display: "flex" }}>
+      <FriendStatus status={status} />
+      <span style={{ fontSize: 15, margin: "0 0 10px 20px" }}>
         {name} {surname}
       </span>
     </li>
