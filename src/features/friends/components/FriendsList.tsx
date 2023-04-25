@@ -9,7 +9,6 @@ import {
   updateFriendsOnline,
 } from "../friendsSlice";
 import Friend from "./Friend";
-import { isEmptyObject } from "../../../utils/isEmptyObject";
 import { isEmptyArray } from "../../../utils/isEmptyArray";
 
 const FriendsList = () => {
@@ -40,7 +39,7 @@ const FriendsList = () => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [friendsWithStatus]);
+  }, []);
 
   useEffect(() => {
     socket.on("friend-online", (friendId: FriendId) => {

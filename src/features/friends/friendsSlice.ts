@@ -7,6 +7,7 @@ import {
   StatusFriend,
 } from "../../types/models/Friend";
 import { IFriendsResponse } from "../../types/responses";
+import { sortASCByStatus } from "./helpers/sortASCByStatus";
 
 interface FriendsState {
   loading: boolean;
@@ -25,40 +26,31 @@ export const friendsSlice = createSlice({
   initialState,
   reducers: {
     setFriendsOnline(state, { payload }: PayloadAction<Array<FriendId>>) {
-      state.friendsWithStatus = state.friends
-        .map((friend) => {
-          let status: StatusFriend = payload.includes(friend._id)
-            ? "online"
-            : "offline";
-          return { friend, status };
-        })
-        .sort((a: FriendWithStatus, b: FriendWithStatus) => {
-          if (a.status === "offline" && b.status === "online") return 1;
-          else if (a.status === "online" && b.status === "offline") return -1;
-          else {
-            const aname = a.friend.name.toLowerCase();
-            const bname = b.friend.name.toLowerCase();
-            if (aname > bname) return 1;
-            else if (aname < bname) return -1;
-            else return 0;
-          }
-        });
+      let friends = state.friends.map((friend) => {
+        let status: StatusFriend = payload.includes(friend._id)
+          ? "online"
+          : "offline";
+        return { friend, status };
+      });
+      state.friendsWithStatus = sortASCByStatus(friends);
     },
     updateFriendsOnline(state, { payload }: PayloadAction<FriendId>) {
-      state.friendsWithStatus = state.friendsWithStatus.map((friend) => {
+      let updatedList = state.friendsWithStatus.map((friend) => {
         if (friend.friend._id === payload) {
           friend.status = "online";
         }
         return friend;
       });
+      state.friendsWithStatus = sortASCByStatus(updatedList);
     },
     updateFriendsOffline(state, { payload }: PayloadAction<FriendId>) {
-      state.friendsWithStatus = state.friendsWithStatus.map((friend) => {
+      let updatedList = state.friendsWithStatus.map((friend) => {
         if (friend.friend._id === payload) {
           friend.status = "offline";
         }
         return friend;
       });
+      state.friendsWithStatus = sortASCByStatus(updatedList);
     },
   },
   extraReducers: (builder) => {
