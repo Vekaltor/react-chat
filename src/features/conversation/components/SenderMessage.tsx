@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import SocketContext from "../../../contexts/socket/SocketContext";
+import { useState } from "react";
 import { useAppDisptach } from "../../../hooks/useAppDisptach";
 import { addNewMessage } from "../conversationSlice";
 import { IMessage } from "../../../types/responses";

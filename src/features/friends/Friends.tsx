@@ -3,14 +3,19 @@ import { useAppDisptach } from "../../hooks/useAppDisptach";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import FriendsList from "./components/FriendsList";
 import { getFriends } from "./friendsSlice";
+import useSocketService from "../../hooks/useSocketService";
+import UserStatusSocketService from "./services/userStatusSocketService";
 
 const Friends = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { friends } = useAppSelector((state) => state.friends);
   const dispatch = useAppDisptach();
 
+  const [Service] = useSocketService(UserStatusSocketService);
+
   useEffect(() => {
     dispatch(getFriends(user?.id!));
+    Service.listeners.getNotificationUnreadMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

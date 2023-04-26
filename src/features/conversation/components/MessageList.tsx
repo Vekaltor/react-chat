@@ -4,11 +4,14 @@ import Message from "./Message";
 import { IMessage } from "../../../types/responses";
 import useSocketService from "../../../hooks/useSocketService";
 import ConversationSocketService from "../services/conversationSocketService";
+import { ConversationEvents } from "../types/conversationSocketEvents";
 
 const MessageList = () => {
   const listRef = useRef<HTMLDivElement>(null);
   const [Service] = useSocketService(ConversationSocketService);
-  const { messages } = useAppSelector((state) => state.conversation);
+  const { messages, idSelectedConversation } = useAppSelector(
+    (state) => state.conversation
+  );
   const { latest, old } = messages;
 
   const scrollToBottom = () => {
@@ -22,9 +25,12 @@ const MessageList = () => {
   }, [messages]);
 
   useEffect(() => {
-    Service.listeners.getMessage();
+    Service.listeners.getMessage(idSelectedConversation);
+    return () => {
+      Service.offListener(ConversationEvents.GET_NEW_MESSAGE);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [idSelectedConversation]);
   return (
     <>
       <div

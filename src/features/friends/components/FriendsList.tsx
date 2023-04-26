@@ -1,28 +1,15 @@
-import { useContext, useEffect } from "react";
-import SocketContext from "../../../contexts/socket/SocketContext";
-import { useAppDisptach } from "../../../hooks/useAppDisptach";
+import { useEffect } from "react";
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { Friend as TFriend, FriendId } from "../../../types/models/Friend";
-import {
-  setFriendsOnline,
-  updateFriendsOffline,
-  updateFriendsOnline,
-} from "../friendsSlice";
 import Friend from "./Friend";
 import { isEmptyArray } from "../../../utils/isEmptyArray";
+import useSocketService from "../../../hooks/useSocketService";
+import UserStatusSocketService from "../services/userStatusSocketService";
 
 const FriendsList = () => {
-  const { socket } = useContext(SocketContext);
   const { friends, friendsWithStatus } = useAppSelector(
     (state) => state.friends
   );
-  const dispatch = useAppDisptach();
-
-  const isFriend = (idUser: string): boolean =>
-    friends.find((friend) => friend._id === idUser) ? true : false;
-
-  const getOnlyIds = (friendsList: Array<TFriend>): FriendId[] =>
-    friendsList.map((friend) => friend._id);
+  const [Service] = useSocketService(UserStatusSocketService);
 
   const ListOfFriends = friendsWithStatus.map(({ friend, status }) => (
     <Friend key={friend._id} friend={friend} status={status} />
@@ -30,30 +17,15 @@ const FriendsList = () => {
 
   useEffect(() => {
     if (isEmptyArray(friends)) {
-      const friendsIds = getOnlyIds(friends);
-
-      socket.emit("get-online-friends", friendsIds);
-
-      socket.on("online-friends", (friendsOnline: Array<FriendId>) => {
-        dispatch(setFriendsOnline(friendsOnline));
-      });
+      Service.senders.checkStatusFriends(friends);
+      Service.listeners.getOnlineFriends();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    socket.on("friend-online", (friendId: FriendId) => {
-      if (isFriend(friendId)) {
-        dispatch(updateFriendsOnline(friendId));
-      }
-    });
-
-    socket.on("friend-offline", (friendId: FriendId) => {
-      if (isFriend(friendId)) {
-        dispatch(updateFriendsOffline(friendId));
-      }
-    });
-
+    Service.listeners.friendOnline(friends);
+    Service.listeners.friendOffline(friends);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

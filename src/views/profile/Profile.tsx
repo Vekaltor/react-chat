@@ -1,28 +1,29 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDisptach } from "../../hooks/useAppDisptach";
-import SocketContext from "../../contexts/socket/SocketContext";
 
 import Chat from "../../features/conversation/Chat";
 import Friends from "../../features/friends/Friends";
 import { logoutUser } from "../../authSlice";
+import useSocketService from "../../hooks/useSocketService";
+import AuthSocketService from "../../services/authSocketService";
 
 const Profile = () => {
-  const { socket } = useContext(SocketContext);
   const { user } = useAppSelector((state) => state.auth);
+  const [Service, socket] = useSocketService(AuthSocketService);
   const history = useNavigate();
   const dispatch = useAppDisptach();
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    socket.emit("user-offline");
+    Service.senders.userOffline();
     history("/login");
   };
 
   useEffect(() => {
     socket.connect();
-    socket.emit("user-online", user?.id);
+    Service.senders.userOnline(user?.id!);
     return () => {
       socket.disconnect();
     };

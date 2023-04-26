@@ -5,7 +5,7 @@ import { addNewMessage } from "../conversationSlice";
 import { ConversationEvents } from "../types/conversationSocketEvents";
 
 class ConversationSocketService {
-  private socket;
+  private socket: Socket;
 
   constructor(socket: Socket) {
     this.socket = socket;
@@ -14,11 +14,16 @@ class ConversationSocketService {
   private dispatch = useAppDisptach();
 
   public listeners = {
-    getMessage: (): void => {
+    getMessage: (currentConversationId: string): void => {
       this.socket.on(
         ConversationEvents.GET_NEW_MESSAGE,
-        (newMessage: IMessage) => {
-          this.dispatch(addNewMessage(newMessage));
+        ({ message, conversationId }) => {
+          console.log(message);
+          console.log(currentConversationId, conversationId);
+          if (currentConversationId === conversationId) {
+            this.dispatch(addNewMessage(message));
+          } else {
+          }
         }
       );
     },
@@ -31,11 +36,11 @@ class ConversationSocketService {
         userId,
       });
     },
-    leaveFromChat: (conversationId: string): void => {
-      this.socket.emit(
-        ConversationEvents.LEAVE_FROM_CONVERSATION,
-        conversationId
-      );
+    leaveFromChat: (userId: string, conversationId: string): void => {
+      this.socket.emit(ConversationEvents.LEAVE_FROM_CONVERSATION, {
+        conversationId,
+        userId,
+      });
     },
     sendMessage: (message: IMessage, conversationId: string): void => {
       this.socket.emit(ConversationEvents.SEND_NEW_MESSAGE, {
@@ -43,6 +48,10 @@ class ConversationSocketService {
         conversationId,
       });
     },
+  };
+
+  public offListener = (socketEvent: ConversationEvents) => {
+    this.socket.off(socketEvent);
   };
 }
 

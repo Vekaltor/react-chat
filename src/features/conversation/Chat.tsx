@@ -20,7 +20,7 @@ const Chat = () => {
   };
 
   const handleLeaveFromChat = () => {
-    Service.senders.leaveFromChat(idSelectedConversation);
+    Service.senders.leaveFromChat(user?.id!, idSelectedConversation);
   };
 
   const handleGetConversation = () => {
@@ -31,7 +31,7 @@ const Chat = () => {
   useLayoutEffect(() => {
     handleGetConversation();
     if (socket) {
-      handleJoinToChat();
+      if (idSelectedConversation) handleJoinToChat();
       return () => {
         handleLeaveFromChat();
       };
