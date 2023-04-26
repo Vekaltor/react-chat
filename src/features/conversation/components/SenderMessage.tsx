@@ -3,6 +3,8 @@ import SocketContext from "../../../contexts/socket/SocketContext";
 import { useAppDisptach } from "../../../hooks/useAppDisptach";
 import { addNewMessage } from "../conversationSlice";
 import { IMessage } from "../../../types/responses";
+import useSocketService from "../../../hooks/useSocketService";
+import ConversationSocketService from "../services/conversationSocketService";
 
 type ButtonSenderProps = {
   conversationId: string;
@@ -10,29 +12,30 @@ type ButtonSenderProps = {
 };
 
 const ButtonSender = (props: ButtonSenderProps) => {
-  const { socket } = useContext(SocketContext);
   const { conversationId, userId } = props;
+
   const [message, setMessage] = useState<string>("");
+  const [Service] = useSocketService(ConversationSocketService);
   const dispatch = useAppDisptach();
 
-  const handleClick = () => {
+  const handleClick = (): void => {
+    if (message === "") return;
+
     const newMessage: IMessage = {
       from_id_user: userId,
       message_text: message,
       created_at: new Date().toISOString(),
     };
-    socket.emit("send-new-message", {
-      message: newMessage,
-      conversationId: conversationId,
-    });
 
     dispatch(addNewMessage(newMessage));
+    Service.senders.sendMessage(newMessage, conversationId);
     setMessage("");
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setMessage(e.target.value);
   };
+
   return (
     <div>
       <input type="text" onChange={handleChange} value={message} />

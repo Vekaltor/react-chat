@@ -2,10 +2,12 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Conversation } from "../../types/models/Conversation";
 import {
   IConversationResponse,
+  ICreatedConversationResponse,
   IMember,
   IMessage,
 } from "../../types/responses";
 import ConversationService from "../../services/conversationService";
+import { MemberToCreatedConversation } from "../../types/queryParams";
 
 interface ConversationState extends Conversation {
   members: Array<IMember>;
@@ -42,7 +44,6 @@ const conversationSlice = createSlice({
     setSelectedConversation(state, { payload }: PayloadAction<string>) {
       state.idSelectedConversation = payload;
     },
-    createNewConversation(state, { payload }) {},
   },
   extraReducers: (builder) => {
     builder.addCase(getConversation.pending, (state) => {
@@ -64,17 +65,37 @@ const conversationSlice = createSlice({
     builder.addCase(getConversation.rejected, (state, { payload }) => {
       state.isLoading = false;
     });
+    builder.addCase(createConversation.pending, (state) => {
+      state = { ...initialState };
+      state.isLoading = true;
+    });
+    builder.addCase(createConversation.fulfilled, (state, { payload }) => {
+      state.idSelectedConversation = payload.idConversation;
+      state.isLoading = false;
+    });
+    builder.addCase(createConversation.rejected, (state, { payload }) => {
+      state.isLoading = false;
+    });
   },
 });
 
 export const getConversation = createAsyncThunk<IConversationResponse, string>(
   "conversation/getConversation",
-  async (id, thunkAPI) => {
+  async (id) => {
     const Service = new ConversationService();
     const response = await Service.getFullConversation(id);
     return response;
   }
 );
+
+export const createConversation = createAsyncThunk<
+  ICreatedConversationResponse,
+  Array<MemberToCreatedConversation>
+>("conversation/create", async (members) => {
+  const Service = new ConversationService();
+  const response = await Service.createConversation(members);
+  return response;
+});
 
 export const { addNewMessage, setSelectedConversation } =
   conversationSlice.actions;

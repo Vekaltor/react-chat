@@ -1,21 +1,17 @@
-import { useLayoutEffect, useEffect, useContext, useRef } from "react";
-import SocketContext from "../../../contexts/socket/SocketContext";
+import { useLayoutEffect, useEffect, useRef } from "react";
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { useAppDisptach } from "../../../hooks/useAppDisptach";
 import Message from "./Message";
-import { addNewMessage } from "../conversationSlice";
+import { IMessage } from "../../../types/responses";
+import useSocketService from "../../../hooks/useSocketService";
+import ConversationSocketService from "../services/conversationSocketService";
 
 const MessageList = () => {
-  const { socket } = useContext(SocketContext);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [Service] = useSocketService(ConversationSocketService);
   const { messages } = useAppSelector((state) => state.conversation);
   const { latest, old } = messages;
-  const dispatch = useAppDisptach();
-  const listRef = useRef<HTMLDivElement>(null);
-
-  console.log(latest, old);
 
   const scrollToBottom = () => {
-    console.log(this);
     listRef.current?.scrollTo({
       top: listRef.current.scrollHeight,
     });
@@ -26,9 +22,7 @@ const MessageList = () => {
   }, [messages]);
 
   useEffect(() => {
-    socket.on("get-new-message", (newMessage) => {
-      dispatch(addNewMessage(newMessage));
-    });
+    Service.listeners.getMessage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -43,9 +37,15 @@ const MessageList = () => {
           overflowY: "scroll",
         }}
       >
-        {[...old, ...latest].map((message, index) => (
-          <Message key={index} {...message} />
-        ))}
+        {[...old, ...latest]
+          .sort((m1: IMessage, m2: IMessage) => {
+            if (m1.created_at > m2.created_at) return 1;
+            else if (m1.created_at < m2.created_at) return -1;
+            else return 0;
+          })
+          .map((message, index) => (
+            <Message key={index} {...message} />
+          ))}
       </div>
     </>
   );

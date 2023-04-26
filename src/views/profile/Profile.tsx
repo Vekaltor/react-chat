@@ -23,6 +23,9 @@ const Profile = () => {
   useEffect(() => {
     socket.connect();
     socket.emit("user-online", user?.id);
+    return () => {
+      socket.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

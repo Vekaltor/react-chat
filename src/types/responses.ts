@@ -1,7 +1,7 @@
 import { Conversation } from "./models/Conversation";
 import { RoleMemberByConversation } from "./models/ConversationMember";
 import { Friend } from "./models/Friend";
-import { User } from "./models/User";
+import { ShortUser, User } from "./models/User";
 
 type SuccesResponse = {
   message: string;
@@ -47,12 +47,10 @@ export interface IMember {
   user: ShortUser;
 }
 
-export type ShortUser = {
-  _id: string;
-  name: string;
-  surname: string;
-};
-
-export interface IIdConversationResponse extends SuccesResponse {
+export interface IOnlyIdConversationResponse extends SuccesResponse {
   id_conversation: string;
+}
+
+export interface ICreatedConversationResponse extends SuccesResponse {
+  idConversation: string;
 }

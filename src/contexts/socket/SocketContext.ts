@@ -13,19 +13,6 @@ export const defaultSocketContextState: ISocketContextState = {
   users: [],
 };
 
-// export type TSocketContextActions =
-//   | "update_socket"
-//   | "update_uid"
-//   | "update_users"
-//   | "remove_user";
-
-// export type TSocketContextPayload = string | string[] | Socket;
-
-// export interface ISocketContextActions {
-//   type: TSocketContextActions;
-//   payload: TSocketContextPayload;
-// }
-
 const SocketContext: Context<ISocketContextState> =
   React.createContext<ISocketContextState>(defaultSocketContextState);
 

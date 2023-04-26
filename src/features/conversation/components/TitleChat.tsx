@@ -13,6 +13,7 @@ const TitleChat = ({ name }: TitleChatProps) => {
 
   const getNameFriend = () => {
     const friend = members.find((member) => member.user._id !== user?.id)?.user;
+
     return friend?.name + " " + friend?.surname;
   };
 
@@ -22,6 +23,7 @@ const TitleChat = ({ name }: TitleChatProps) => {
       names += user.name;
       if (members[index + 1]) names += ", ";
     });
+
     return names;
   };
 

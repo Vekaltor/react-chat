@@ -7,7 +7,7 @@ import {
   IRegisterResponse,
 } from "../types/responses";
 import { LoginElements, RegisterElements } from "../types/forms";
-import { IActivateAccParams } from "../types/params";
+import { ActivateAccParams } from "../types/queryParams";
 
 class AuthService extends Axios {
   public async register(body: RegisterElements) {
@@ -30,7 +30,7 @@ class AuthService extends Axios {
       .then((res) => res.data);
   }
 
-  public async activate(params: IActivateAccParams) {
+  public async activate(params: ActivateAccParams) {
     const { id, token } = params;
     return await axios
       .get<IActivateAccResponse>(`${backendURL}/activate/${id}/${token}`, {})

@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import AuthService from "../services/authService";
-import { IActivateAccParams } from "../types/params";
+import { ActivateAccParams } from "../types/queryParams";
 import { AxiosError } from "axios";
 import { IActivateAccError } from "../types/errors";
 import { IActivateAccResponse } from "../types/responses";
@@ -11,7 +11,7 @@ const PopupActivatedAcc = () => {
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [activated, setActivated] = useState<boolean>(false);
-  const params = useParams<IActivateAccParams>();
+  const params = useParams<ActivateAccParams>();
   const navigate = useNavigate();
 
   const redirtectToLogin = () => {

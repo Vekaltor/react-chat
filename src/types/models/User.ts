@@ -39,3 +39,9 @@ export type SocketUser = {
   userId: string;
   socketId: string;
 };
+
+export type ShortUser = {
+  _id: string;
+  name: string;
+  surname: string;
+};
