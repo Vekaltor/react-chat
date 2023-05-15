@@ -1,5 +1,5 @@
 # React - chat
-An application for communication between friends. The assumptions of apliakajic are to create something similar to Facebook.
+An application for communication between friends. The assumptions of app are to create something similar to Facebook.
 
 So far, I've implemented login/registration using my API, and additionally,
 I've created a socket.io server for real-time communication between users. Users can text each other and see who is online of their friends.
