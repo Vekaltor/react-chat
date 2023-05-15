@@ -26,6 +26,10 @@ Add a user settings panel.
 ## Check on your own
 link - not available yet
 
+![image](https://github.com/Vekaltor/react-chat/assets/56607344/08012528-cd44-4e32-a9bd-641b4401c6f8)
+
+![image](https://github.com/Vekaltor/react-chat/assets/56607344/8daad816-6ef7-43d3-8860-6d44d6844cb7)
+
 
 ## Setup
 To run this project, install it locally using npm:
@@ -45,7 +49,6 @@ Panel for registration own account - all entered data is validated
 ### - Chat
 Users can Click on some friend and start chatting with him
 
-
 in the near Future: Available chatting with more friends in one time (groups)
 
 ### - Notifications
@@ -57,4 +60,6 @@ After login to own account, user can see list of friends, sorted firstly by stat
 
 ### - Account activation (email)
 After successful registration, the user receives an e-mail with an activation link, the link redirects the user to the activation panel. Clicking on the button activates the account.
+
+### - Theme Switcher
 
