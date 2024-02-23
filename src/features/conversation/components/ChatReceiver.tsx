@@ -42,9 +42,9 @@ const ChatReceiver = () => {
   return (
     <WrapperBox typeBg="bgTransparent">
       <div>{conversation_name ? conversation_name : getDefaultName()}</div>
-      <div>
-        <StyledStatus status={"online"} />
-      </div>
+      {/*<div>*/}
+      {/*  <StyledStatus status={"online"} />*/}
+      {/*</div>*/}
     </WrapperBox>
   );
 };

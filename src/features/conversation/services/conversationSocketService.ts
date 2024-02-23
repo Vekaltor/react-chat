@@ -19,7 +19,6 @@ class ConversationSocketService {
             this.socket.on(
                 ConversationEvents.GET_NEW_MESSAGE,
                 ({message, conversationId}) => {
-                    console.log("getMessage");
                     if (currentConversationId === conversationId) {
                         this.dispatch(addNewMessage(message));
                     } else {
@@ -32,14 +31,13 @@ class ConversationSocketService {
             this.socket.on(
                 ConversationEvents.GET_UNREAD_CONVERSATIONS,
                 (conversation: UnreadConversation) => {
-                    console.log("getNotifications", conversation);
                     if (conversation)
                         this.dispatch(setConversationAsUnread(conversation));
                 }
             );
         },
         getAllUnreadConversations: () => {
-            this.socket.on(
+            this.socket.once(
                 ConversationEvents.GET_ALL_UNREAD_CONVERSATIONS,
                 (unreadConversations: Array<UnreadConversation>) => {
                     console.log(unreadConversations);
@@ -64,7 +62,6 @@ class ConversationSocketService {
             conversationId: string,
             socket: Socket
         ): void => {
-            console.log("socket leavefromchat", socket);
             this.socket.emit(ConversationEvents.LEAVE_FROM_CONVERSATION, {
                 conversationId,
                 userId,
@@ -78,6 +75,8 @@ class ConversationSocketService {
         },
         checkNotifications: (userId: string) => {
             this.socket.emit(ConversationEvents.CHECK_UNREAD_CONVERSATIONS, userId);
+
+            this.listeners.getAllUnreadConversations();
         },
     };
 

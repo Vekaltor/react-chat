@@ -64,7 +64,8 @@ const conversationSlice = createSlice({
             state.idSelectedConversation = payload;
         },
         setConversationAsUnread(state, {payload}: PayloadAction<UnreadConversation>) {
-            state.unreadMessagesPerConversation[payload.conversationId] = payload.unreadMessages.length;
+            if (payload.unreadMessages && payload.unreadMessages.length > 0)
+                state.unreadMessagesPerConversation[payload.conversationId] = payload.unreadMessages.length;
         },
         deleteConversationFromUnread(
             state,
