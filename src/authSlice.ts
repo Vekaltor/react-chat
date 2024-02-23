@@ -25,7 +25,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  isAuthorizated: false,
+  isAuthorizated: new Cookies().get("user") ? true : false,
   user: new Cookies().get("user") || undefined,
   loading: false,
   message: "",

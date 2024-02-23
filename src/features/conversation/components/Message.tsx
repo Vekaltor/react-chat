@@ -7,23 +7,27 @@ const Message = (props: MessageProps) => {
 
   const style1: CSSProperties = {
     margin: "5px",
-    borderRadius: "10px",
-    background: "#333",
-    padding: 10,
+    borderRadius: "0 10px 10px 10px",
+    background: "var(--darkGrey)",
+    padding: 16,
     width: "fit-content",
-    color: "white",
-    fontSize: 14,
+    color: "grey",
+    fontSize: 12,
+    wordWrap: "break-word",
+    maxWidth: "300px",
   };
 
   const style2: CSSProperties = {
     margin: " 5px",
-    borderRadius: "10px",
-    background: "#333",
-    padding: 10,
+    borderRadius: "10px 0 10px 10px",
+    background: "var(--lightPourple)",
+    padding: 16,
     width: "fit-content",
-    color: "white",
+    color: "var(--white)",
     justifySelf: "right",
-    fontSize: 14,
+    fontSize: 12,
+    wordWrap: "break-word",
+    maxWidth: "300px",
   };
 
   const timeAgo = () => {
@@ -56,7 +60,13 @@ const Message = (props: MessageProps) => {
       <div style={props.from_id_user === user?.id! ? style2 : style1}>
         {props.message_text}
       </div>
-      <div style={{ padding: "0 10px", fontSize: 11, fontWeight: "bolder" }}>
+      <div
+        style={{
+          padding: "0 10px",
+          fontSize: 9,
+          color: "white",
+        }}
+      >
         {timeAgo()}
       </div>
     </div>

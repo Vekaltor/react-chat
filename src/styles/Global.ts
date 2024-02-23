@@ -4,6 +4,26 @@ export const GlobalStyles = createGlobalStyle`
 
 ${fontFaces}
 
+:root{
+  --darkBlue: #1e70cd;
+  --lightBlue: #309ad0;
+  --darkRed: #741c28;
+  --lightRed: #f02036;
+  --aqua: #4eb0b1;
+}
+
+
+:root{
+  //Dark Theme
+  --darkPrimary: #191a1c;
+  --darkSecond: #17181a;
+  --white: #f1f1f1;
+  --lightGrey: #747577;
+  --darkGrey: #202123;
+  --lightPourple: #7739fe;
+  --darkPourple: #6232cd; 
+}
+
 *,
 *::before,
 *::after {
@@ -11,18 +31,19 @@ ${fontFaces}
   margin: 0;
   padding: 0;
   font-family: 'Asap', sans-serif;
+  font-family: 'Inter', sans-serif; 
 }
 
 body {
-  overflow-x: hidden;
   text-rendering: optimizeSpeed;
   line-height: 1;
   font-size: 1rem;
-  
+  overflow: hidden;
 }
 
 #root{
   min-height: 100vh;
+  max-height: 100vh;
 }
 
 button {

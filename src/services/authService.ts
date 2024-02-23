@@ -10,6 +10,14 @@ import { LoginElements, RegisterElements } from "../types/forms";
 import { ActivateAccParams } from "../types/queryParams";
 
 class AuthService extends Axios {
+  public async checkToken() {
+    return await axios
+      .get<IRegisterResponse>(`${backendURL}/register`, {
+        withCredentials: true,
+      })
+      .then((res) => res.data);
+  }
+
   public async register(body: RegisterElements) {
     return await axios
       .post<IRegisterResponse>(`${backendURL}/register`, body, {

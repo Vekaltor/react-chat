@@ -5,10 +5,10 @@ import { Navigate, Route, RouteProps, Routes } from "react-router-dom";
 type ProtectedRouteProps = RouteProps & {};
 
 const ProtectedRoute = ({ ...routeProps }: ProtectedRouteProps) => {
-  const [cookies, __] = useCookies(["accessToken"]);
-  const isAuth = cookies.accessToken;
+  const [cookies, __] = useCookies(["user"]);
+  const isActiveSession: string | undefined = cookies.user;
 
-  if (isAuth) {
+  if (isActiveSession) {
     return (
       <Routes>
         <Route {...routeProps} />

@@ -30,6 +30,7 @@ export interface IConversationResponse extends SuccesResponse {
 export interface IConversation extends Conversation {
   messages: Array<IMessage>;
   members: Array<IMember>;
+  id_conversation: string;
 }
 
 export interface IMessage {
@@ -47,8 +48,11 @@ export interface IMember {
   user: ShortUser;
 }
 
-export interface IOnlyIdConversationResponse extends SuccesResponse {
-  id_conversation: string;
+export interface IPrivateConversationIdsAndMembersIds extends SuccesResponse {
+  conversations: Array<{
+    id_conversation: string;
+    members: Array<string>;
+  }>;
 }
 
 export interface ICreatedConversationResponse extends SuccesResponse {

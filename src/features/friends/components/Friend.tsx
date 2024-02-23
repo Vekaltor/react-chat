@@ -1,33 +1,36 @@
+import { useEffect, useState } from "react";
 import { useAppDisptach } from "../../../hooks/useAppDisptach";
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import ConversationService from "../../../services/conversationService";
 import { RoleMemberByConversation } from "../../../types/models/ConversationMember";
 import { FriendWithStatus as FriendProps } from "../../../types/models/Friend";
 import {
   createConversation,
   setSelectedConversation,
 } from "../../conversation/conversationSlice";
-import FriendStatus from "./FriendStatus";
+import NotificationUnreadMessages from "../../conversation/components/NotificationUnreadMessages";
+import Avatar from "./Avatar";
+import { StyledWrapperFriend } from "./styles/WrapperFriend.styled";
+import WrapperBox from "../../../components/WrapperBox";
 
 const Friend = (props: FriendProps) => {
   const { status, friend } = props;
+  const [idConversation, setIdConversation] = useState<string>("");
   const { user } = useAppSelector((state) => state.auth);
+  const { privateConversations, unreadMessagesPerConversation } =
+    useAppSelector((state) => state.conversation);
   const { name, surname, photo } = friend;
   const dispatch = useAppDisptach();
 
-  const getIdConversation = async () => {
-    const conversationService = new ConversationService();
-    let ids = {
-      idUser: user?.id!,
-      idFriend: friend._id,
-    };
-    return await conversationService.getIdConversation(ids);
+  const getIdConversation = () => {
+    return (
+      privateConversations.find(
+        ({ members }) =>
+          members.includes(user?.id!) && members.includes(friend._id)
+      )?.id_conversation || ""
+    );
   };
 
   const handleClick = async () => {
-    const idConversation: string | undefined = (await getIdConversation())
-      ?.id_conversation;
-
     if (idConversation) {
       dispatch(setSelectedConversation(idConversation));
     } else {
@@ -40,13 +43,36 @@ const Friend = (props: FriendProps) => {
     }
   };
 
+  const setIdToConversation = () => {
+    const idConversation: string = getIdConversation();
+    setIdConversation(idConversation);
+  };
+
+  useEffect(() => {
+    setIdToConversation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <li style={{ display: "flex", cursor: "pointer" }} onClick={handleClick}>
-      <FriendStatus status={status} />
-      <span style={{ fontSize: 15, margin: "0 0 10px 20px" }}>
-        {name} {surname}
-      </span>
-    </li>
+    <WrapperBox typeBg="bgThirdy">
+      <StyledWrapperFriend onClick={handleClick}>
+        <Avatar img={photo} status={status} />
+        <span
+          style={{
+            fontSize: 13,
+            fontWeight: 400,
+            letterSpacing: 1,
+            margin: "0 20px 0px 20px",
+            flexGrow: 1,
+          }}
+        >
+          {name} {surname}
+        </span>
+        {idConversation in unreadMessagesPerConversation ? (
+          <NotificationUnreadMessages idConversation={idConversation!} />
+        ) : null}
+      </StyledWrapperFriend>
+    </WrapperBox>
   );
 };
 

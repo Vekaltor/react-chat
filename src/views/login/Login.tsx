@@ -8,6 +8,7 @@ import { useAppDisptach } from "../../hooks/useAppDisptach";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { LoginElements } from "../../types/forms";
 import { S } from "../styles";
+import { WrapperCenterPage } from "../../components/styles/WrapperCenterPage";
 
 type LoginProps = {
   swapView: () => void;
@@ -21,7 +22,7 @@ const Login = ({ swapView }: LoginProps) => {
     },
   });
   const { errors } = formState;
-  const { message, type } = useAppSelector((state) => state.notification);
+  const { message } = useAppSelector((state) => state.notification);
   const { isAuthorizated, loading } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDisptach();
@@ -39,40 +40,42 @@ const Login = ({ swapView }: LoginProps) => {
   };
 
   return (
-    <S.Wrapper id="login-form">
-      {message ? <Notification /> : null}
-      {loading ? <Loader background="rgba(0,0,0,0.2)" /> : null}
-      <S.LeftSide>
-        <S.Header>Login</S.Header>
-        <S.Form onSubmit={handleSubmit(formSubmit)} noValidate>
-          <Input
-            refs={register("email", {
-              required: "Email cannot be empty",
-            })}
-            error={errors.email}
-            type="email"
-            placeholder="Email"
-          />
-          <Input
-            refs={register("pass", {
-              required: "Password cannot be empty",
-            })}
-            error={errors.pass}
-            type="password"
-            placeholder="Password"
-          />
-          <S.ForgottenPasword>Forgot your password?</S.ForgottenPasword>
-          <S.ButtonSubmit type="submit" disabled={isAuthorizated}>
-            sign in
-          </S.ButtonSubmit>
-        </S.Form>
-      </S.LeftSide>
-      <S.RightSide>
-        <S.Header>Hello, Friend!</S.Header>
-        <S.Text>Enter your personal details and start journey with us</S.Text>
-        <S.ButtonSubmit onClick={handleClick}>sign up</S.ButtonSubmit>
-      </S.RightSide>
-    </S.Wrapper>
+    <WrapperCenterPage>
+      <S.Wrapper id="login-form">
+        {message ? <Notification /> : null}
+        {loading ? <Loader background="rgba(0,0,0,0.2)" /> : null}
+        <S.LeftSide>
+          <S.Header>Login</S.Header>
+          <S.Form onSubmit={handleSubmit(formSubmit)} noValidate>
+            <Input
+              refs={register("email", {
+                required: "Email cannot be empty",
+              })}
+              error={errors.email}
+              type="email"
+              placeholder="Email"
+            />
+            <Input
+              refs={register("pass", {
+                required: "Password cannot be empty",
+              })}
+              error={errors.pass}
+              type="password"
+              placeholder="Password"
+            />
+            <S.ForgottenPasword>Forgot your password?</S.ForgottenPasword>
+            <S.ButtonSubmit type="submit" disabled={isAuthorizated}>
+              sign in
+            </S.ButtonSubmit>
+          </S.Form>
+        </S.LeftSide>
+        <S.RightSide>
+          <S.Header>Hello, Friend!</S.Header>
+          <S.Text>Enter your personal details and start journey with us</S.Text>
+          <S.ButtonSubmit onClick={handleClick}>sign up</S.ButtonSubmit>
+        </S.RightSide>
+      </S.Wrapper>
+    </WrapperCenterPage>
   );
 };
 

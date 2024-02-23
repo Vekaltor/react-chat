@@ -9,9 +9,10 @@ import { ConversationEvents } from "../types/conversationSocketEvents";
 const MessageList = () => {
   const listRef = useRef<HTMLDivElement>(null);
   const [Service] = useSocketService(ConversationSocketService);
-  const { messages, idSelectedConversation } = useAppSelector(
+  const { current, idSelectedConversation } = useAppSelector(
     (state) => state.conversation
   );
+  const { messages } = current;
   const { latest, old } = messages;
 
   const scrollToBottom = () => {
@@ -31,16 +32,31 @@ const MessageList = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idSelectedConversation]);
+
+  // *::-webkit-scrollbar {
+  //   width: 16px;
+  // }
+
+  // *::-webkit-scrollbar-track {
+  //   background: #ffffff;
+  // }
+
+  // *::-webkit-scrollbar-thumb {
+  //   background-color: #d6d6d6;
+  //   border-radius: 10px;
+  //   border: 3px solid #ffffff;
+  // }
+
   return (
     <>
       <div
         onLoad={scrollToBottom}
         ref={listRef}
         style={{
-          height: 250,
-          maxHeight: 250,
+          height: "87vh",
           padding: 15,
           overflowY: "scroll",
+          scrollbarColor: "#f23",
         }}
       >
         {[...old, ...latest]

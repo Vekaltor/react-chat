@@ -1,52 +1,75 @@
-import { useLayoutEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
 import { useAppDisptach } from "../../hooks/useAppDisptach";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import TitleChat from "./components/TitleChat";
-import PanelMessages from "./components/PanelMessages";
-import { getConversation } from "./conversationSlice";
+import { destroyChat, getConversation } from "./conversationSlice";
 import useSocketService from "../../hooks/useSocketService";
 import ConversationSocketService from "./services/conversationSocketService";
+import ChatContainer from "./components/ChatContainer";
+import RightPanel from "./components/RightPanel";
+import WrapperBox from "../../components/WrapperBox";
 
 const Chat = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const { conversation_name, idSelectedConversation } = useAppSelector(
+  const { current, idSelectedConversation } = useAppSelector(
     (state) => state.conversation
   );
   const [Service, socket] = useSocketService(ConversationSocketService);
   const dispatch = useAppDisptach();
 
   const handleJoinToChat = () => {
-    Service.senders.jointToChat(user?.id!, idSelectedConversation);
+    if (idSelectedConversation) {
+      Service.senders.jointToChat(user?.id!, idSelectedConversation);
+    }
   };
 
   const handleLeaveFromChat = () => {
-    Service.senders.leaveFromChat(user?.id!, idSelectedConversation);
+    if (idSelectedConversation) {
+      Service.senders.leaveFromChat(user?.id!, idSelectedConversation, socket);
+      dispatch(destroyChat());
+    }
   };
 
   const handleGetConversation = () => {
-    if (idSelectedConversation)
+    if (idSelectedConversation) {
       dispatch(getConversation(idSelectedConversation));
+    }
   };
 
-  useLayoutEffect(() => {
+  const handleBeforeUnload = () => {
+    const handleUnload = () => {
+      handleLeaveFromChat();
+    };
+    window.addEventListener("beforeunload", handleUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  };
+
+  useEffect(() => {
     handleGetConversation();
     if (socket) {
-      if (idSelectedConversation) handleJoinToChat();
+      handleJoinToChat();
+      handleBeforeUnload();
       return () => {
         handleLeaveFromChat();
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idSelectedConversation]);
 
-  if (!idSelectedConversation) return null;
-
-  return (
-    <div style={{ width: 300, height: "auto", border: "1px solid black" }}>
-      <TitleChat name={conversation_name} />
-      <PanelMessages />
-    </div>
-  );
+  return current._id ? (
+    <WrapperBox
+      typeBg="bgTransparent"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "4fr 2fr",
+        gridColumnGap: "3px",
+      }}
+    >
+      <ChatContainer />
+      <RightPanel />
+    </WrapperBox>
+  ) : null;
 };
 
 export default Chat;

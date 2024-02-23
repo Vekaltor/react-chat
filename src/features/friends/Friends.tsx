@@ -4,26 +4,58 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import FriendsList from "./components/FriendsList";
 import { getFriends } from "./friendsSlice";
 import useSocketService from "../../hooks/useSocketService";
-import UserStatusSocketService from "./services/userStatusSocketService";
+import ConversationSocketService from "../conversation/services/conversationSocketService";
+import { getPrivateConversations } from "../conversation/conversationSlice";
+import { ConversationEvents } from "../conversation/types/conversationSocketEvents";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../authSlice";
+import AuthSocketService from "../../services/authSocketService";
+import WrapperBox from "../../components/WrapperBox";
+import ThemeSwitch from "../../components/ThemeSwitch";
 
 const Friends = () => {
   const { user } = useAppSelector((state) => state.auth);
   const { friends } = useAppSelector((state) => state.friends);
   const dispatch = useAppDisptach();
+  const [conversationSocketService, socket] = useSocketService(ConversationSocketService);
 
-  const [Service] = useSocketService(UserStatusSocketService);
+  //ALL TO MOVE TO OTHER COMPONNENT
+  const history = useNavigate();
+  const [authSocketService] = useSocketService(AuthSocketService);
+  const { current } = useAppSelector((state) => state.conversation);
+
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    conversationSocketService.senders.leaveFromChat(user?.id!, current._id!, socket);
+    authSocketService.senders.logout(user?.id!);
+    history("/login");
+  };
+  // HERE END
+
+  useEffect(() => {
+    conversationSocketService.listeners.getAllUnreadConversations();
+    conversationSocketService.listeners.getNotifications();
+    conversationSocketService.senders.checkNotifications(user?.id!);
+    return () => {
+      conversationSocketService.offListener(ConversationEvents.GET_UNREAD_CONVERSATIONS);
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     dispatch(getFriends(user?.id!));
-    Service.listeners.getNotificationUnreadMessages();
+    dispatch(getPrivateConversations(user?.id!));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div style={{ padding: 10, marginTop: 20 }}>
-      <h3 style={{ marginBottom: 20 }}>Friends:</h3>
+    <WrapperBox typeBg="bgTransparent">
       {friends.length ? <FriendsList /> : null}
-    </div>
+      <button style={{ color: "whitesmoke" }} onClick={handleLogout}>
+        LOGOUT
+      </button>
+      <br></br>
+      <ThemeSwitch />
+    </WrapperBox>
   );
 };
 

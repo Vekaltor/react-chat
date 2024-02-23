@@ -1,7 +1,6 @@
-import { useContext } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
-import ThemeTogglerContext from "../contexts/theme/ThemeContext";
 import useView from "../hooks/useView";
 
 import ThemeSwitch from "../components/ThemeSwitch";
@@ -15,9 +14,8 @@ enum viewEnums {
 
 const LoginPage = () => {
   const [view, swapView] = useView(viewEnums.login);
-  const [cookies, __] = useCookies(["accessToken"]);
-  const isAuth = cookies.accessToken;
-  const themeContext = useContext(ThemeTogglerContext);
+  const [cookies, __] = useCookies(["user"]);
+  const isAuth = cookies.user;
 
   const viewComponent =
     view === viewEnums.login ? (
@@ -29,10 +27,7 @@ const LoginPage = () => {
   if (!isAuth)
     return (
       <>
-        <ThemeSwitch
-          onChange={themeContext?.themeToggler}
-          theme={themeContext?.theme}
-        />
+        <ThemeSwitch />
         {viewComponent}
       </>
     );

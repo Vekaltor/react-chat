@@ -14,7 +14,7 @@ const WrapperSwitch = styled.label`
   width: var(--widthWrapper);
   height: var(--heightWrapper);
   border-radius: var(--borderRadiusWrapper);
-  background-color: ${({ theme }) => theme.textPrimary};
+  background-color: ${({ theme }) => theme.colorPrimary};
 `;
 
 const SliderRound = styled.span`

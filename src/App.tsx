@@ -8,8 +8,8 @@ import { ThemeContextProvider } from "./contexts/theme/ThemeContextProvider";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
-import View from "./components/View";
 import PopupActivatedAcc from "./components/PopupActivatedAcc";
+import WrapperBox from "./components/WrapperBox";
 
 const App: React.FC = (): React.ReactElement => {
   const [theme, themeToggler] = useColorMode(initialTheme);
@@ -22,7 +22,7 @@ const App: React.FC = (): React.ReactElement => {
     >
       <GlobalStyles />
       <Router>
-        <View>
+        <WrapperBox typeBg="bgPrimary" style={{ height: "100vh" }}>
           <Routes>
             <Route
               path="*"
@@ -31,7 +31,7 @@ const App: React.FC = (): React.ReactElement => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/verify/:id/:token" element={<PopupActivatedAcc />} />
           </Routes>
-        </View>
+        </WrapperBox>
       </Router>
     </ThemeContextProvider>
   );

@@ -2,18 +2,28 @@ import { DefaultTheme } from "styled-components";
 
 export const darkTheme: DefaultTheme = {
   name: "dark",
-  textPrimary: "#FAFAFA",
-  textSecondary: "#FFC80A",
-  bgPrimary: "#1c1c1c",
-  bgSecondary: "#1c1c1c",
+  colorPrimary: "#f1f1f1",
+  colorSecondary: "#747577",
+  bgPrimary: "#202123",
+  bgSecondary: "#17181a",
+  bgThirdy: "#191a1c",
+  bgTransparent: "transparent",
+  lightPourple: "#7739fe",
+  darkPourple: "#6232cd",
 };
 
 export const lightTheme: DefaultTheme = {
   name: "light",
-  textPrimary: "#1c1c1c",
-  textSecondary: "#1c1c1c",
+  colorPrimary: "#1c1c1c",
+  colorSecondary: "#1c1c1c",
   bgPrimary: "#FAFAFA",
-  bgSecondary: "#FFC80A",
+  bgSecondary: "#F0F0F0",
+  bgThirdy: "#F0F0F0",
+  bgTransparent: "transparent",
+
+  //CHANGE FOR LIGHTTHEME
+  lightPourple: "#7739fe",
+  darkPourple: "#6232cd",
 };
 
 enum themeNames {
@@ -26,6 +36,6 @@ const themes = {
   lightTheme,
 };
 
-export const initialTheme: string = themeNames.LIGHT;
+export const initialTheme: string = themeNames.DARK;
 
 export default themes;

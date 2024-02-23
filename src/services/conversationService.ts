@@ -3,13 +3,9 @@ import { backendURL } from "../config/server";
 import {
   IConversationResponse,
   ICreatedConversationResponse,
-  IOnlyIdConversationResponse,
+  IPrivateConversationIdsAndMembersIds,
 } from "../types/responses";
-import {
-  CreateConversationParams,
-  IdParam,
-  IdsPrivateConversationParams,
-} from "../types/queryParams";
+import { CreateConversationParams, IdParam } from "../types/queryParams";
 
 class ConversationService {
   public async getFullConversation(
@@ -25,20 +21,20 @@ class ConversationService {
       .then((res) => res.data);
   }
 
-  public async getIdConversation(
-    ids: IdsPrivateConversationParams
-  ): Promise<IOnlyIdConversationResponse> {
+  public async getPrivateConversations(
+    idUser: string
+  ): Promise<IPrivateConversationIdsAndMembersIds> {
     return await axios
-      .get<IOnlyIdConversationResponse>(`${backendURL}/idConversation`, {
-        withCredentials: true,
-        params: {
-          ids,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        return res.data;
-      });
+      .get<IPrivateConversationIdsAndMembersIds>(
+        `${backendURL}/privateConversations`,
+        {
+          withCredentials: true,
+          params: {
+            idUser,
+          },
+        }
+      )
+      .then((res) => res.data);
   }
 
   public async createConversation(members: CreateConversationParams) {

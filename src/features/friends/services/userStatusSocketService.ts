@@ -40,17 +40,6 @@ class UserStatusSocketService {
         }
       });
     },
-    getNotificationUnreadMessages: (): void => {
-      this.socket.on(
-        "get-notification-unread-message",
-        (countUnreadMessages: number) => {
-          console.log(
-            "Liczba nieprzeczytanych wiadomosci",
-            countUnreadMessages
-          );
-        }
-      );
-    },
   };
 
   public senders = {

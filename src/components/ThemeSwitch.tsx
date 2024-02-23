@@ -1,20 +1,18 @@
-import { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
 import { S } from "./styles/ThemeSwitch.styles";
+import ThemeTogglerContext from "../contexts/theme/ThemeContext";
 
-type SwitchButtonProps = {
-  theme: string | undefined;
-  onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
-};
+const ThemeSwitch = (): ReactElement => {
+  const themeContext = useContext(ThemeTogglerContext);
 
-const ThemeSwitch = ({ onChange, theme }: SwitchButtonProps): ReactElement => {
   return (
     <S.ThemeSwitch
       name="theme-switch"
       ariaLabel="Theme toogle"
       leftLabel=""
       rightLabel=""
-      checked={theme === "dark"}
-      onChange={onChange}
+      checked={themeContext?.theme === "dark"}
+      onChange={themeContext?.themeToggler}
     />
   );
 };
