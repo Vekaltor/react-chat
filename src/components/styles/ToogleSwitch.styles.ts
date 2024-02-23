@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const CSSVariables = styled.var`
-  --widthWrapper: 60px;
-  --heightWrapper: 30px;
-  --borderRadiusWrapper: 30px;
-  --radiusRound: 20px;
+  --widthWrapper: 40px;
+  --heightWrapper: 20px;
+  --borderRadiusWrapper: 10px;
+  --radiusRound: 12px;
   --marginRound: 5px;
 `;
 
@@ -25,9 +25,11 @@ const SliderRound = styled.span`
   &::after {
     content: "";
     display: block;
-    margin: var(--marginRound);
+    margin-left: var(--marginRound);
+    margin-right: var(--marginRound);
     width: var(--radiusRound);
     height: var(--radiusRound);
+    transform: translateY(calc((var(--heightWrapper) - var(--radiusRound)) / 2));
     border-radius: 50%;
     background-color: ${({ theme }) => theme.bgPrimary};
     transition: 0.2s;
