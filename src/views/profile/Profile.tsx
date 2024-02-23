@@ -8,8 +8,8 @@ import WrapperBox from "../../components/WrapperBox";
 import SideBarMenu from "../../layout/SideBarMenu";
 
 const style = {
-    width: "100%",
-    height: "100%",
+    width: "100vw",
+    height: "100vh",
     display: "grid",
     gridTemplateColumns: "2fr 6fr",
     gridTemplateRows: "1fr",

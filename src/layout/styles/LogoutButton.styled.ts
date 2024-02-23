@@ -9,5 +9,9 @@ export const StyledLogoutButton  = styled.button`
   min-width: fit-content;
   height: 25px;
   border-radius: 50%;
+  
+  &:hover{
+    opacity: 0.8;
+  }
 `
 

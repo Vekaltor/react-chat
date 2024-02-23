@@ -24,10 +24,10 @@ const Header = () => {
   };
 
   return (
-    <WrapperBox typeBg="bgThirdy">
+    <WrapperBox typeBg="bgThirdy" style={{marginBottom:"3px"}}>
       <StyledWrapperFlexColumn>
         <StyledWrapperFlexRow style={{ justifyContent: "space-between" }}>
-          <StyledHeader>Chats</StyledHeader>
+          <StyledHeader>Czaty</StyledHeader>
           {countUnreadMessages() !== 0 ? (
             <StyledTotalUnreadMessages>
               <StyledCounter>{countUnreadMessages()}</StyledCounter>

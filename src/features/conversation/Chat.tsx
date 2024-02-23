@@ -61,6 +61,7 @@ const Chat = () => {
     <WrapperBox
       typeBg="bgTransparent"
       style={{
+        height:"100vh",
         display: "grid",
         gridTemplateColumns: "4fr 2fr",
         gridColumnGap: "3px",

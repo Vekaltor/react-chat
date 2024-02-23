@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { StatusFriend } from "../../../../types/models/Friend";
 
 type StyledStatusProps = {
@@ -16,5 +16,5 @@ export const StyledStatus = styled.div<StyledStatusProps>`
   border: ${({ status }) =>
     status === "online" ? "3px solid var(--darkGrey)" : "none"};
   background-color: ${({ status }) =>
-    status === "online" ? "var(--darkPourple)" : "transparent"};
+    status === "online" ? "var(--lightPourple)" : "transparent"};
 `;

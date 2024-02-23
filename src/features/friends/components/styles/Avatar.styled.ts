@@ -1,16 +1,37 @@
 import styled from "styled-components";
 
-export const StyledAvatar = styled.div`
+interface StyledWrapperAvatarProps {
+    isActive: boolean;
+    size: AvatarSizes
+}
+
+export type AvatarSizes = "verySmall" | "small" | "medium" | "large";
+
+export enum AvatarSizesEnum {
+    VERY_SMALL = "verySmall",
+    SMALL = "small",
+    MEDIUM = "medium",
+    LARGE = "large",
+}
+
+const avatarSizeMap = {
+    [AvatarSizesEnum.VERY_SMALL]: "15px",
+    [AvatarSizesEnum.SMALL]: "30px",
+    [AvatarSizesEnum.MEDIUM]: "50px",
+    [AvatarSizesEnum.LARGE]: "70px",
+};
+
+export const StyledAvatar = styled.div<StyledWrapperAvatarProps>`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  min-width: 50px;
-  height: 50px;
+  width: ${props => avatarSizeMap[props.size]};
+  min-width: ${props => avatarSizeMap[props.size]};
+  height: ${props => avatarSizeMap[props.size]};
   border-radius: 50%;
-  background-color: transparent;
-  /* overflow: hidden; */
+  box-shadow: ${props =>
+          props.isActive ? `0px 0px 10px 5px var(--lightPourple)` : "none"};
 
   & svg {
     width: 100%;

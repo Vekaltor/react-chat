@@ -3,20 +3,19 @@ import PanelMessages from "./PanelMessages";
 import HeaderChat from "./HeaderChat";
 
 const ChatContainer = () => {
-  return (
-    <WrapperBox
-      typeBg="bgTransparent"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "2fr",
-        gridTemplateRows: "1fr 9fr",
-        gridRowGap: "3px",
-      }}
-    >
-      <HeaderChat />
-      <PanelMessages />
-    </WrapperBox>
-  );
+    return (
+        <WrapperBox
+            typeBg="bgTransparent"
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                height:"100vh"
+            }}
+        >
+            <HeaderChat/>
+            <PanelMessages/>
+        </WrapperBox>
+    );
 };
 
 export default ChatContainer;

@@ -6,7 +6,7 @@ import Friends from "../features/friends/Friends";
 import Settings from "../features/settings/Settings";
 
 const style: CSSProperties = {
-    height: "100vh",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between"

@@ -9,7 +9,7 @@ const style: CSSProperties = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "10px"
+    padding: "20px"
 }
 
 const Settings = () => {

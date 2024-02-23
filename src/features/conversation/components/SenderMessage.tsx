@@ -4,6 +4,7 @@ import {addNewMessage} from "../conversationSlice";
 import {IMessage} from "../../../types/responses";
 import useSocketService from "../../../hooks/useSocketService";
 import ConversationSocketService from "../services/conversationSocketService";
+import { IoIosSend } from "react-icons/io";
 
 type ButtonSenderProps = {
     conversationId: string;
@@ -36,27 +37,28 @@ const ButtonSender = (props: ButtonSenderProps) => {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex'
-            }}
-        >
+        <div style={{display: 'flex', margin:3, height:"40px"}}>
             <input
                 type="text"
                 onChange={handleChange}
                 value={message}
-                style={{width: "85%"}}
+                style={{width: "80%", color:"#333", padding: 10, fontSize:14}}
             />
             <button
                 onClick={handleClick}
                 style={{
-                    background: "#333",
-                    color: "#EEE",
-                    padding: "3px 30px",
+                    display:"flex",
+                    gap:5,
+                    background:"var(--darkPourple)",
+                    color: "#eee",
+                    justifyContent:"center",
+                    alignItems:"center",
+                    flexGrow: 1,
                     marginLeft: 1,
                 }}
             >
-                Send
+                <IoIosSend />
+                Wyślij
             </button>
         </div>
     );
