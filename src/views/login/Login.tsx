@@ -31,7 +31,7 @@ const Login = ({ swapView }: LoginProps) => {
   const formSubmit: SubmitHandler<LoginElements> = async (
     data: LoginElements
   ) => {
-    await dispatch(loginUser(data));
+    await dispatch(loginUser(data))
     if (!message) history("/");
   };
 

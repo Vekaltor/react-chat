@@ -107,9 +107,7 @@ export const registerUser = createAsyncThunk<
 export const loginUser = createAsyncThunk<
     ILoginResponse,
     LoginElements,
-    {
-        rejectValue: ILoginError;
-    }
+    { rejectValue: ILoginError }
 >("auth/login", async (body: LoginElements, thunkAPI) => {
     let service = new AuthService();
     let response: ILoginResponse = await service
