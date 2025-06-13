@@ -1,9 +1,8 @@
-import {ShortUser} from '../../../types/models/User';
 import SentInviteUser from './SentInviteUser';
-import SuggestedUser from "./SuggestedUser";
+import {SentInvite} from "../../../types/models/Friend";
 
 interface SentInvitesListProps {
-    users: ShortUser[];
+    users: SentInvite[];
 }
 
 const SentInvitesList = ({users}: SentInvitesListProps) => {
@@ -69,8 +68,8 @@ const SentInvitesList = ({users}: SentInvitesListProps) => {
                 gap: '12px',
                 maxHeight: '100%',
             }}>
-                {users.map((user) => (
-                    <SentInviteUser key={user._id} user={user}/>
+                {users.map((invite) => (
+                    <SentInviteUser key={invite._id} invite={invite}/>
                 ))}
             </div>
         </div>

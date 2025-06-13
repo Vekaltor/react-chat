@@ -7,11 +7,12 @@ import ReceivedInvitesList from './ReceivedInvitesList';
 import SentInvitesList from './SentInvitesList';
 import EmptyCommunity from "./EmptyCommunity";
 import LoadingCommunity from "./LoadingCommunity";
+import {ReceivedInvite, SentInvite} from "../../../types/models/Friend";
 
 const Community = () => {
     const [discoverableUsers, setDiscoverableUsers] = useState<ShortUser[]>([]);
-    const [receivedInvites, setReceivedInvites] = useState<ShortUser[]>([]);
-    const [sentInvites, setSentInvites] = useState<ShortUser[]>([]);
+    const [receivedInvites, setReceivedInvites] = useState<ReceivedInvite[]>([]);
+    const [sentInvites, setSentInvites] = useState<SentInvite[]>([]);
     const [loading, setLoading] = useState(true);
     const friendsService = new FriendsService();
 

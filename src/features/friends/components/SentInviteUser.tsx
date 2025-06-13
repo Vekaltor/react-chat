@@ -1,11 +1,11 @@
-import { ShortUser } from '../../../types/models/User';
 import Avatar from './Avatar';
+import {SentInvite} from "../../../types/models/Friend";
 
 interface SentInviteUserProps {
-    user: ShortUser;
+    invite: SentInvite;
 }
 
-const SentInviteUser = ({ user }: SentInviteUserProps) => {
+const SentInviteUser = ({invite}: SentInviteUserProps) => {
     return (
         <div style={{
             display: 'flex',
@@ -38,10 +38,10 @@ const SentInviteUser = ({ user }: SentInviteUserProps) => {
                 right: '0',
                 height: '1px',
                 background: 'linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.5), transparent)'
-            }} />
+            }}/>
 
             <Avatar img="" status="offline" size="small"/>
-            <div style={{ flex: 1 }}>
+            <div style={{flex: 1}}>
                 <div style={{
                     color: '#FFFFFF',
                     fontSize: '15px',
@@ -49,7 +49,7 @@ const SentInviteUser = ({ user }: SentInviteUserProps) => {
                     marginBottom: '4px',
                     letterSpacing: '-0.01em'
                 }}>
-                    {user.name} {user.surname}
+                    {invite.id_user_accept.name} {invite.id_user_accept.surname}
                 </div>
                 <div style={{
                     color: '#F59E0B',
@@ -79,7 +79,7 @@ const SentInviteUser = ({ user }: SentInviteUserProps) => {
                     borderTop: '2px solid transparent',
                     borderRadius: '50%',
                     animation: 'spin 2s linear infinite'
-                }} />
+                }}/>
                 <span style={{
                     color: '#F59E0B',
                     fontSize: '12px',

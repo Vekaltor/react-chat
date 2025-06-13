@@ -1,13 +1,14 @@
 import { ShortUser } from '../../../types/models/User';
 import Avatar from './Avatar';
+import {ReceivedInvite} from "../../../types/models/Friend";
 
 interface ReceivedInviteUserProps {
-    user: ShortUser;
+    invite: ReceivedInvite;
     onAccept: (inviteId: string) => void;
     onReject: (inviteId: string) => void;
 }
 
-const ReceivedInviteUser = ({ user, onAccept, onReject }: ReceivedInviteUserProps) => {
+const ReceivedInviteUser = ({ invite, onAccept, onReject }: ReceivedInviteUserProps) => {
     return (
         <div style={{
             display: 'flex',
@@ -67,7 +68,7 @@ const ReceivedInviteUser = ({ user, onAccept, onReject }: ReceivedInviteUserProp
                     marginBottom: '4px',
                     letterSpacing: '-0.01em'
                 }}>
-                    {user.name} {user.surname}
+                    {invite.id_user_request.name} {invite.id_user_request.surname}
                 </div>
                 <div style={{
                     color: '#22C55E',
@@ -87,7 +88,7 @@ const ReceivedInviteUser = ({ user, onAccept, onReject }: ReceivedInviteUserProp
                 alignItems: 'center'
             }}>
                 <button
-                    onClick={() => onAccept(user._id)}
+                    onClick={() => onAccept(invite._id)}
                     style={{
                         background: 'linear-gradient(135deg, #22C55E, #16A34A)',
                         color: '#FFFFFF',
@@ -114,7 +115,7 @@ const ReceivedInviteUser = ({ user, onAccept, onReject }: ReceivedInviteUserProp
                     ✓ Akceptuj
                 </button>
                 <button
-                    onClick={() => onReject(user._id)}
+                    onClick={() => onReject(invite._id)}
                     style={{
                         background: 'rgba(239, 68, 68, 0.1)',
                         color: '#EF4444',

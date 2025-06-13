@@ -2,6 +2,7 @@ import axios from "axios";
 import {backendURL} from "../config/server";
 import {IFriendsResponse} from "../types/responses";
 import {ShortUser} from "../types/models/User";
+import {ReceivedInvite, SentInvite} from "../types/models/Friend";
 
 class FriendsService {
     async fetchFriends(): Promise<IFriendsResponse> {
@@ -18,14 +19,14 @@ class FriendsService {
         return response.data.users;
     }
 
-    async getSentInvites(): Promise<ShortUser[]> {
+    async getSentInvites(): Promise<SentInvite[]> {
         const response = await axios.get(`${backendURL}/friends/sent-invites`, {
             withCredentials: true
         });
         return response.data.users;
     }
 
-    async getReceivedInvites(): Promise<ShortUser[]> {
+    async getReceivedInvites(): Promise<ReceivedInvite[]> {
         const response = await axios.get(`${backendURL}/friends/received-invites`, {
             withCredentials: true
         });

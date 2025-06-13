@@ -1,9 +1,9 @@
 import {ShortUser} from '../../../types/models/User';
 import ReceivedInviteUser from './ReceivedInviteUser';
-import SuggestedUser from "./SuggestedUser";
+import {ReceivedInvite} from "../../../types/models/Friend";
 
 interface ReceivedInvitesListProps {
-    users: ShortUser[];
+    users: ReceivedInvite[];
     onAccept: (inviteId: string) => void;
     onReject: (inviteId: string) => void;
 }
@@ -71,10 +71,10 @@ const ReceivedInvitesList = ({users, onAccept, onReject}: ReceivedInvitesListPro
                 gap: '12px',
                 maxHeight: '100%',
             }}>
-                {users.map((user) => (
+                {users.map((invite) => (
                     <ReceivedInviteUser
-                        key={user._id}
-                        user={user}
+                        key={invite._id}
+                        invite={invite}
                         onAccept={onAccept}
                         onReject={onReject}
                     />
