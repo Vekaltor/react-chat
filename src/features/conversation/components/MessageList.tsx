@@ -14,9 +14,8 @@ const MessageList = () => {
         (state) => state.conversation
     );
     const [showScrollToBottom, setShowScrollToBottom] = useState(false);
-    const {messages} = current;
-    const {latest, old} = messages;
 
+    // Move function declarations before useLayoutEffect
     const scrollToBottom = () => {
         listRef.current?.scrollTo({
             top: listRef.current.scrollHeight,
@@ -25,12 +24,17 @@ const MessageList = () => {
     };
 
     const scrollToBottomInstant = () => {
-        listRef.current?.scrollTo(0, listRef.current.scrollHeight);
+        if (current && listRef.current) {
+            listRef.current.scrollTo(0, listRef.current.scrollHeight);
+        }
     };
 
     const handleScroll = () => {
-        const maxScroll = listRef?.current!.scrollHeight - listRef?.current!.clientHeight;
-        const currentScroll = listRef?.current!.scrollTop;
+        const list = listRef.current;
+        if (!list) return;
+
+        const maxScroll = list.scrollHeight - list.clientHeight;
+        const currentScroll = list.scrollTop;
         const threshold = 100;
 
         if (maxScroll - currentScroll > threshold) {
@@ -42,10 +46,12 @@ const MessageList = () => {
 
     useLayoutEffect(() => {
         scrollToBottomInstant();
-    }, [messages]);
+    }, [current?.messages]);
 
     useEffect(() => {
-        const list = listRef?.current!;
+        const list = listRef.current;
+        if (!list) return;
+
         list.addEventListener('scroll', handleScroll);
 
         return () => list.removeEventListener('scroll', handleScroll);
@@ -60,44 +66,31 @@ const MessageList = () => {
 
     return (
         <div style={{position: "relative", overflowY: "hidden", height: "100%"}}>
-            <div
-                onLoad={scrollToBottomInstant}
-                ref={listRef}
-                style={{
-                    height: "inherit",
-                    padding: 15,
-                    overflowY: "scroll",
-                    scrollbarColor: "#f23",
-                }}
-            >
-                {[...old, ...latest]
-                    .sort((m1: IMessage, m2: IMessage) => {
-                        if (m1.created_at > m2.created_at) return 1;
-                        else if (m1.created_at < m2.created_at) return -1;
-                        else return 0;
-                    })
-                    .map((message, index) => (
-                        <Message key={index} {...message} />
-                    ))}
-            </div>
-            {showScrollToBottom && <ScrollToBottomChat click={scrollToBottom} />}
+            {current && (
+                <div
+                    onLoad={scrollToBottomInstant}
+                    ref={listRef}
+                    style={{
+                        height: "inherit",
+                        padding: 15,
+                        overflowY: "scroll",
+                        scrollbarColor: "#f23",
+                    }}
+                >
+                    {[...current.messages.old, ...current.messages.latest]
+                        .sort((m1: IMessage, m2: IMessage) => {
+                            if (m1.created_at > m2.created_at) return 1;
+                            else if (m1.created_at < m2.created_at) return -1;
+                            else return 0;
+                        })
+                        .map((message, index) => (
+                            <Message key={index} {...message} />
+                        ))}
+                </div>
+            )}
+            {showScrollToBottom && <ScrollToBottomChat click={scrollToBottom}/>}
         </div>
     );
 };
 
 export default MessageList;
-
-
-// *::-webkit-scrollbar {
-//   width: 16px;
-// }
-
-// *::-webkit-scrollbar-track {
-//   background: #ffffff;
-// }
-
-// *::-webkit-scrollbar-thumb {
-//   background-color: #d6d6d6;
-//   border-radius: 10px;
-//   border: 3px solid #ffffff;
-// }

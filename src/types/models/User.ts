@@ -44,4 +44,5 @@ export type ShortUser = {
   _id: string;
   name: string;
   surname: string;
+  contact: Contact;
 };

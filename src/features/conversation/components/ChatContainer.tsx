@@ -12,7 +12,7 @@ const ChatContainer = () => {
                 height:"100vh"
             }}
         >
-            <HeaderChat/>
+            <HeaderChat />
             <PanelMessages/>
         </WrapperBox>
     );

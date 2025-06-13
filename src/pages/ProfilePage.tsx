@@ -1,10 +1,13 @@
 import SocketsProvider from "../contexts/socket/SocketContextProvider";
 import Profile from "../views/profile/Profile";
+import {ActiveViewProvider} from "../contexts/ActiveViewContext";
 
 const ProfilePage = () => {
   return (
     <SocketsProvider>
-      <Profile />
+        <ActiveViewProvider>
+            <Profile />
+        </ActiveViewProvider>
     </SocketsProvider>
   );
 };

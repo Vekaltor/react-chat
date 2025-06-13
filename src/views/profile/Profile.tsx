@@ -6,6 +6,8 @@ import useSocketService from "../../hooks/useSocketService";
 import AuthSocketService from "../../services/authSocketService";
 import WrapperBox from "../../components/WrapperBox";
 import SideBarMenu from "../../layout/SideBarMenu";
+import {useActiveView} from "../../contexts/ActiveViewContext";
+import SuggestedFriends from "../../features/friends/components/SuggestedFriends";
 
 const style = {
     width: "100vw",
@@ -19,6 +21,7 @@ const style = {
 const Profile = () => {
     const {user} = useAppSelector((state) => state.auth);
     const [Service] = useSocketService(AuthSocketService);
+    const {activeView} = useActiveView();
 
     useEffect(() => {
         Service.connect(user?.id!);
@@ -32,7 +35,8 @@ const Profile = () => {
     return (
         <WrapperBox typeBg="bgTransparent" style={style}>
             <SideBarMenu/>
-            <Chat/>
+            {activeView === "suggested-friends" && <SuggestedFriends/>}
+            {activeView === "chat" && <Chat/>}
         </WrapperBox>
     );
 };

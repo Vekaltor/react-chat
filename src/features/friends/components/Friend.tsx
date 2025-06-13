@@ -3,11 +3,12 @@ import {useAppDisptach} from "../../../hooks/useAppDisptach";
 import {useAppSelector} from "../../../hooks/useAppSelector";
 import {RoleMemberByConversation} from "../../../types/models/ConversationMember";
 import {FriendWithStatus as FriendProps} from "../../../types/models/Friend";
-import {createConversation, setSelectedConversation,} from "../../conversation/conversationSlice";
+import {createConversation, setSelectedConversation} from "../../conversation/conversationSlice";
 import NotificationUnreadMessages from "../../conversation/components/NotificationUnreadMessages";
 import Avatar from "./Avatar";
 import {StyledWrapperFriend} from "./styles/WrapperFriend.styled";
 import WrapperBox from "../../../components/WrapperBox";
+import {useActiveView} from "../../../contexts/ActiveViewContext";
 
 const Friend = (props: FriendProps) => {
     const {status, friend} = props;
@@ -17,6 +18,7 @@ const Friend = (props: FriendProps) => {
         useAppSelector((state) => state.conversation);
     const {name, surname, photo} = friend;
     const dispatch = useAppDisptach();
+    const {setActiveView} = useActiveView();
 
     const getIdConversation = () => {
         return (
@@ -29,6 +31,7 @@ const Friend = (props: FriendProps) => {
 
     const handleClick = async () => {
         if (idConversation) {
+            setActiveView('chat');
             dispatch(setSelectedConversation(idConversation));
         } else {
             dispatch(
@@ -40,24 +43,17 @@ const Friend = (props: FriendProps) => {
         }
     };
 
-    const setIdToConversation = () => {
-        const idConversation: string = getIdConversation();
-        setIdConversation(idConversation);
-    };
-
-    const isActiveConversation = (): boolean => {
-        return current?._id === getIdConversation();
-    }
-
     useEffect(() => {
-        setIdToConversation();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        const newIdConversation = getIdConversation();
+        setIdConversation(newIdConversation);
+    }, [privateConversations, user?.id, friend._id]);
+
+    const isActiveConversation = current?._id === idConversation;
 
     return (
         <WrapperBox typeBg="bgThirdy">
             <StyledWrapperFriend onClick={handleClick}>
-                <Avatar img={photo} status={status} isActive={isActiveConversation()}/>
+                <Avatar img={photo} status={status} isActive={isActiveConversation}/>
                 <span
                     style={{
                         fontSize: 13,

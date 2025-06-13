@@ -1,46 +1,66 @@
-import type {Socket} from "socket.io-client";
+import {Socket} from "socket.io-client";
+import {ShortUser} from "../types/models/User";
 import {AuthSocketEvents} from "../types/authSocketEvents";
 import ConversationSocketService from "../features/conversation/services/conversationSocketService";
-import {ConversationId} from "../features/friends/types/types";
 
 class AuthSocketService {
-    private socket: Socket;
-    private conversationSocketService: ConversationSocketService;
+    private socket: Socket | null = null;
+    private conversationSocketService: ConversationSocketService | null = null;
 
     constructor(socket: Socket) {
         this.socket = socket;
         this.conversationSocketService = new ConversationSocketService(socket);
     }
 
-    public senders = {
-        logout: (userId: string): void => {
-            // this.beforeLogout(userId,[""],this.socket);
-            this.socket.emit(AuthSocketEvents.USER_OFFLINE, userId);
-        },
-        login: (userId: string): void => {
-            this.socket.emit(AuthSocketEvents.USER_ONLINE, userId);
-            this.setup(userId);
-        },
-    };
+    get senders() {
+        return {
+            logout: (userId: string): void => {
+                this.socket?.emit(AuthSocketEvents.USER_OFFLINE, userId);
+            },
+            login: (userId: string): void => {
+                this.socket?.emit(AuthSocketEvents.USER_ONLINE, userId);
+                this.setup(userId);
+            },
+            getAllUsers: () => {
+                this.socket?.emit("getAllUsers");
+            },
+            sendFriendRequest: (fromUserId: string, toUserId: string) => {
+                this.socket?.emit("sendFriendRequest", {fromUserId, toUserId});
+            }
+        };
+    }
 
     public connect = (userId: string) => {
-        this.socket.connect();
-        this.socket.emit("user-connected", userId);
+        this.socket?.connect();
+        this.socket?.emit("user-connected", userId);
     };
 
     public disconnect = () => {
-        // this.conversationSocketService();
-        this.socket.disconnect();
+        this.socket?.disconnect();
+        this.socket = null;
+        this.conversationSocketService = null;
     };
 
     private setup(userId: string) {
-        this.conversationSocketService.senders.checkNotifications(userId);
+        this.socket?.on("user-connected", (socketId: string) => {
+            console.log("User connected", socketId);
+        });
+
+        this.socket?.on("user-disconnected", (socketId: string) => {
+            console.log("User disconnected", socketId);
+        });
     }
 
-    private beforeLogout(userId: string, socket: Socket, conversationsIds: Array<ConversationId>) {
-        conversationsIds.forEach(convId => {
-            this.conversationSocketService.senders.leaveFromChat(userId, convId, socket);
-        })
+    get listeners() {
+        return {
+            getUsers: (callback: (users: ShortUser[]) => void) => {
+                this.socket?.on("getUsers", callback);
+            }
+        };
+    }
+
+    offListener(event: string) {
+        this.socket?.off(event);
     }
 }
 

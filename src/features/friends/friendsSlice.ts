@@ -1,13 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import FriendsService from "../../services/friendsService";
-import {
-  Friend,
-  FriendId,
-  FriendWithStatus,
-  StatusFriend,
-} from "../../types/models/Friend";
-import { IFriendsResponse } from "../../types/responses";
-import { sortASCByStatus } from "./helpers/sortASCByStatus";
+import {Friend, FriendId, FriendWithStatus, StatusFriend,} from "../../types/models/Friend";
+import {IFriendsResponse} from "../../types/responses";
+import {sortASCByStatus} from "./helpers/sortASCByStatus";
 
 interface FriendsState {
   loading: boolean;
@@ -61,7 +56,7 @@ export const friendsSlice = createSlice({
       getFriends.fulfilled,
       (state, { payload }: PayloadAction<IFriendsResponse>) => {
         state.loading = false;
-        state.friends = payload.friends;
+        state.friends = payload.data || [];
       }
     );
     builder.addCase(getFriends.rejected, (state) => {
@@ -72,13 +67,12 @@ export const friendsSlice = createSlice({
 
 export const getFriends = createAsyncThunk(
   "friends/getFriendsForUser",
-  async (idUser: string) => {
+  async () => {
     let service = new FriendsService();
-    let response = await service.fetchFriends(idUser);
     // .catch((err: AxiosError) => {
     //   console.log(err);
     // });
-    return response;
+    return await service.fetchFriends();
   }
 );
 

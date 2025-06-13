@@ -21,7 +21,7 @@ interface CurrentConversation extends Conversation {
 }
 
 interface ConversationState {
-    current: CurrentConversation;
+    current: CurrentConversation | null;
     idSelectedConversation: string;
     privateConversations: Array<{
         id_conversation: string;
@@ -31,19 +31,21 @@ interface ConversationState {
     isLoading: boolean;
 }
 
-const initialState: ConversationState = {
-    current: {
-        conversation_name: "",
-        options: {
-            emoji: "",
-            thema: "",
-        },
-        members: [],
-        messages: {
-            old: [],
-            latest: [],
-        },
+const initCurrentConv : CurrentConversation ={
+    conversation_name: "",
+    options: {
+        emoji: "",
+        thema: "",
     },
+    members: [],
+    messages: {
+        old: [],
+        latest: [],
+    },
+}
+
+const initialState: ConversationState = {
+    current: initCurrentConv,
     privateConversations: [],
     unreadMessagesPerConversation: {},
     idSelectedConversation: "",
@@ -56,9 +58,10 @@ const conversationSlice = createSlice({
     reducers: {
         destroyChat(state) {
             state.idSelectedConversation = "";
+            state.current = null
         },
         addNewMessage(state, {payload}: PayloadAction<IMessage>) {
-            state.current.messages.latest.push(payload);
+            state.current?.messages.latest.push(payload);
         },
         setSelectedConversation(state, {payload}: PayloadAction<string>) {
             state.idSelectedConversation = payload;
@@ -76,27 +79,56 @@ const conversationSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getConversation.pending, (state) => {
-            state.current.messages = initialState.current.messages;
+            state.current = {
+                conversation_name: "",
+                options: {
+                    emoji: "",
+                    thema: "",
+                },
+                members: [],
+                messages: {
+                    old: [],
+                    latest: [],
+                },
+            };
             state.isLoading = true;
         });
         builder.addCase(
             getConversation.fulfilled,
             (state, {payload}: PayloadAction<IConversationResponse>) => {
                 state.isLoading = false;
-                state.current.conversation_name =
-                    payload.conversation.conversation_name;
-                state.current.members = payload.conversation.members;
-                state.current.messages.old = payload.conversation.messages;
-                state.current.options = payload.conversation.options;
-                state.current.type = payload.conversation.type;
-                state.current._id = payload.conversation.id_conversation;
+                state.current = {
+                    conversation_name: payload.conversation.conversation_name,
+                    members: payload.conversation.members,
+                    messages: {
+                        old: payload.conversation.messages,
+                        latest: state.current?.messages.latest || [], // Preserve existing latest messages
+                    },
+                    options: payload.conversation.options,
+                    type: payload.conversation.type,
+                    _id: payload.conversation.id_conversation,
+                };
             }
         );
         builder.addCase(getConversation.rejected, (state, {payload}) => {
             state.isLoading = false;
         });
         builder.addCase(createConversation.pending, (state) => {
-            state = {...initialState};
+            state.current = {
+                conversation_name: "",
+                options: {
+                    emoji: "",
+                    thema: "",
+                },
+                members: [],
+                messages: {
+                    old: [],
+                    latest: [],
+                },
+            };
+            state.privateConversations = [];
+            state.unreadMessagesPerConversation = {};
+            state.idSelectedConversation = "";
             state.isLoading = true;
         });
         builder.addCase(createConversation.fulfilled, (state, {payload}) => {

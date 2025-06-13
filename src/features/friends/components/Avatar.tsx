@@ -12,7 +12,7 @@ type AvatarProps = {
 
 const Avatar = ({img, status, isActive, size = "medium"}: AvatarProps) => {
     return (
-        <StyledAvatar isActive={isActive || false} size={size}>
+        <StyledAvatar isActive={!!isActive} size={size}>
             {img ? <img src={img} alt={img}/> : <GoPerson/>}
             <FriendStatus status={status}/>
         </StyledAvatar>

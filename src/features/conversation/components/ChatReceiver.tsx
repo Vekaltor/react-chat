@@ -1,52 +1,46 @@
 import WrapperBox from "../../../components/WrapperBox";
-import { useAppSelector } from "../../../hooks/useAppSelector";
-import { ConversationType } from "../../../types/models/Conversation";
-import { StyledStatus } from "../../friends/components/styles/Status.styled";
+import {useAppSelector} from "../../../hooks/useAppSelector";
+import {ConversationType} from "../../../types/models/Conversation";
 
 const ChatReceiver = () => {
-  const { user } = useAppSelector((state) => state.auth);
-  const { type, members, conversation_name } = useAppSelector(
-    (state) => state.conversation.current
-  );
-  const { friendsWithStatus } = useAppSelector((state) => state.friends);
+    const {user} = useAppSelector((state) => state.auth);
+    const currentChat = useAppSelector(
+        (state) => state.conversation.current
+    );
 
-  const checkStatus = () => {
-    // friendsWithStatus.find(({friend :{_id}})=>{ _id ==members.})
-  };
+    if (!currentChat) return null;
 
-  const isPrivateConversation = () => type === ConversationType.PRIVATE;
+    const {type, members, conversation_name} = currentChat;
 
-  const getNameFriend = () => {
-    const friend = members.find((member) => member.user._id !== user?.id)?.user;
+    const isPrivateConversation = () => type === ConversationType.PRIVATE;
 
-    return friend?.name + " " + friend?.surname;
-  };
+    const getNameFriend = () => {
+        const friend = members.find((member) => member.user._id !== user?.id)?.user;
 
-  const getIdFriend = () => {
-    return members.find((member) => member.user._id !== user?.id)?.id_user;
-  };
+        return friend?.name + " " + friend?.surname;
+    };
 
-  const getNameMembers = () => {
-    let names = "";
-    members.forEach(({ user }, index) => {
-      names += user.name;
-      if (members[index + 1]) names += ", ";
-    });
+    const getNameMembers = () => {
+        let names = "";
+        members.forEach(({user}, index) => {
+            names += user.name;
+            if (members[index + 1]) names += ", ";
+        });
 
-    return names;
-  };
-  const getDefaultName = () => {
-    return isPrivateConversation() ? getNameFriend() : getNameMembers();
-  };
+        return names;
+    };
+    const getDefaultName = () => {
+        return isPrivateConversation() ? getNameFriend() : getNameMembers();
+    };
 
-  return (
-    <WrapperBox typeBg="bgTransparent">
-      <div>{conversation_name ? conversation_name : getDefaultName()}</div>
-      {/*<div>*/}
-      {/*  <StyledStatus status={"online"} />*/}
-      {/*</div>*/}
-    </WrapperBox>
-  );
+    return (
+        <WrapperBox typeBg="bgTransparent">
+            <div>{conversation_name ? conversation_name : getDefaultName()}</div>
+            {/*<div>*/}
+            {/*  <StyledStatus status={"online"} />*/}
+            {/*</div>*/}
+        </WrapperBox>
+    );
 };
 
 export default ChatReceiver;

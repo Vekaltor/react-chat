@@ -24,7 +24,7 @@ const Friends = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getFriends(user?.id!));
+        dispatch(getFriends());
         dispatch(getPrivateConversations(user?.id!));
     }, []);
 
