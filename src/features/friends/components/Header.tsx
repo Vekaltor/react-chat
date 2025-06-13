@@ -55,7 +55,7 @@ const Header = () => {
                             }}
                         >
                             <IoMdPersonAdd/>
-                            Znajomi
+                            Społeczność
                         </button>
                     </div>
                 </StyledWrapperFlexRow>

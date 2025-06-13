@@ -8,6 +8,7 @@ import ConversationSocketService from "../conversation/services/conversationSock
 import {getPrivateConversations} from "../conversation/conversationSlice";
 import {ConversationEvents} from "../conversation/types/conversationSocketEvents";
 import WrapperBox from "../../components/WrapperBox";
+import Header from "./components/Header";
 
 const Friends = () => {
     const {user} = useAppSelector((state) => state.auth);
@@ -30,6 +31,7 @@ const Friends = () => {
 
     return (
         <WrapperBox typeBg="bgTransparent">
+            <Header/>
             {friends.length ? <FriendsList/> : null}
         </WrapperBox>
     );

@@ -7,7 +7,7 @@ import AuthSocketService from "../../services/authSocketService";
 import WrapperBox from "../../components/WrapperBox";
 import SideBarMenu from "../../layout/SideBarMenu";
 import {useActiveView} from "../../contexts/ActiveViewContext";
-import SuggestedFriends from "../../features/friends/components/SuggestedFriends";
+import Community from "../../features/friends/components/Community";
 
 const style = {
     width: "100vw",
@@ -35,7 +35,7 @@ const Profile = () => {
     return (
         <WrapperBox typeBg="bgTransparent" style={style}>
             <SideBarMenu/>
-            {activeView === "suggested-friends" && <SuggestedFriends/>}
+            {activeView === "suggested-friends" && <Community/>}
             {activeView === "chat" && <Chat/>}
         </WrapperBox>
     );

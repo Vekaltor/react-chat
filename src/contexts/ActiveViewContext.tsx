@@ -10,7 +10,7 @@ interface ActiveViewContextType {
 const ActiveViewContext = createContext<ActiveViewContextType | undefined>(undefined);
 
 export const ActiveViewProvider = ({ children }: { children: ReactNode }) => {
-    const [activeView, setActiveViewState] = useState<ActiveViewType>('chat');
+    const [activeView, setActiveViewState] = useState<ActiveViewType>('suggested-friends');
 
     const setActiveView = (view: ActiveViewType) => {
         setActiveViewState(view);

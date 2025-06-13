@@ -33,7 +33,6 @@ const FriendsList = () => {
 
   return (
     <WrapperBox typeBg="bgTransparent">
-      <Header/>
       <ul
         style={{
           display: "flex",

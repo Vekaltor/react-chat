@@ -20,7 +20,7 @@ export interface IActivateAccResponse extends SuccesResponse {}
 export interface ILogoutResponse extends SuccesResponse {}
 
 export interface IFriendsResponse {
-  data: Array<Friend>;
+  friends: Array<Friend>;
   success: boolean;
   count: number;
 }

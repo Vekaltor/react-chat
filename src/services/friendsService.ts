@@ -4,23 +4,50 @@ import {IFriendsResponse} from "../types/responses";
 import {ShortUser} from "../types/models/User";
 
 class FriendsService {
-    public async fetchFriends() {
-        return await axios
-            .get<IFriendsResponse>( // Zmień na GET
-                `${backendURL}/friends`, // Popraw ścieżkę jeśli potrzeba
-                {
-                    withCredentials: true, // To wyśle cookies
-                }
-            )
-            .then((res) => res.data);
+    async fetchFriends(): Promise<IFriendsResponse> {
+        const response = await axios.get<IFriendsResponse>(`${backendURL}/friends`, {
+            withCredentials: true,
+        })
+        return response.data;
     }
 
-    public async getAvailableUsers() {
-        return await axios
-            .get<ShortUser[]>(`${backendURL}/friends/discover`, {
-                withCredentials: true,
-            })
-            .then((res) => res.data);
+    async getDiscoverableUsers(): Promise<ShortUser[]> {
+        const response = await axios.get(`${backendURL}/friends/discover`, {
+            withCredentials: true
+        });
+        return response.data.users;
+    }
+
+    async getSentInvites(): Promise<ShortUser[]> {
+        const response = await axios.get(`${backendURL}/friends/sent-invites`, {
+            withCredentials: true
+        });
+        return response.data.users;
+    }
+
+    async getReceivedInvites(): Promise<ShortUser[]> {
+        const response = await axios.get(`${backendURL}/friends/received-invites`, {
+            withCredentials: true
+        });
+        return response.data.users;
+    }
+
+    async sendInvite(userId: string): Promise<void> {
+        await axios.post(`${backendURL}/friends/invite/${userId}`, {}, {
+            withCredentials: true
+        });
+    }
+
+    async acceptInvite(inviteId: string): Promise<void> {
+        await axios.post(`${backendURL}/friends/accept/${inviteId}`, {}, {
+            withCredentials: true
+        });
+    }
+
+    async rejectInvite(inviteId: string): Promise<void> {
+        await axios.post(`${backendURL}/friends/reject/${inviteId}`, {}, {
+            withCredentials: true
+        });
     }
 }
 

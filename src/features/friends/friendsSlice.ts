@@ -56,7 +56,7 @@ export const friendsSlice = createSlice({
       getFriends.fulfilled,
       (state, { payload }: PayloadAction<IFriendsResponse>) => {
         state.loading = false;
-        state.friends = payload.data || [];
+        state.friends = payload.friends || [];
       }
     );
     builder.addCase(getFriends.rejected, (state) => {
