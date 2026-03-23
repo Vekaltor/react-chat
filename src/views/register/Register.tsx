@@ -88,7 +88,7 @@ const Register = ({ swapView }: RegisterProps) => {
             />
             <S.ButtonSubmit
               type="submit"
-              disabled={loading || message ? true : false}
+              disabled={!!(loading || message)}
             >
               sign up
             </S.ButtonSubmit>
