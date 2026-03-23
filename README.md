@@ -27,8 +27,9 @@ Add a user settings panel.
 link - not available yet
 
 ![image](https://github.com/Vekaltor/react-chat/assets/56607344/08012528-cd44-4e32-a9bd-641b4401c6f8)
+<img width="1636" height="1045" alt="react-chat-preview" src="https://github.com/user-attachments/assets/50266905-d41c-46d9-885e-d4f57d4e3a6d" />
+<img width="1637" height="1036" alt="image" src="https://github.com/user-attachments/assets/e0c9ab89-f271-4816-83cd-da20631ec33c" />
 
-![image](https://github.com/Vekaltor/react-chat/assets/56607344/8daad816-6ef7-43d3-8860-6d44d6844cb7)
 
 
 ## Setup
